@@ -6,51 +6,71 @@
 	<groupId>com.github.tadukoo.parsing</groupId>
 	<artifactId>TadukooParsingParent</artifactId>
 	<version>0.1-Alpha-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+	<description>Various libraries for parsing different formats</description>
 	<modules>
 		<module>TadukooJSON</module>
 	</modules>
-	<packaging>pom</packaging>
 	<properties>
-		<!-- Java Versions -->
-		<java.source.version>14</java.source.version>
-		<java.target.version>14</java.target.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
-		<!-- JUnit Versions -->
+		<!-- Java and JUnit Versions -->
+		<java.version>14</java.version>
 		<junit.jupiter.version>5.5.2</junit.jupiter.version>
 		<junit.platform.version>1.5.2</junit.platform.version>
+		
+		<!-- JUnit Information -->
+		<junit.jupiter.groupID>org.junit.jupiter</junit.jupiter.groupID>
+		<junit.jupiter.artifactID>junit-jupiter-engine</junit.jupiter.artifactID>
+		<junit.platform.groupID>org.junit.platform</junit.platform.groupID>
+		<junit.platform.artifactID>junit-platform-runner</junit.platform.artifactID>
+		
+		<!-- Maven Plugin Version -->
+		<maven.compiler.version>3.8.1</maven.compiler.version>
+		<maven.surefire.version>3.0.0-M4</maven.surefire.version>
+		<maven.source.version>3.2.1</maven.source.version>
+		<maven.javadoc.version>3.2.0</maven.javadoc.version>
+		<maven.gpg.version>1.6</maven.gpg.version>
 		
 		<!-- Directories -->
 		<directory.source>src</directory.source>
 		<directory.test>junit</directory.test>
 		<directory.resource>resource</directory.resource>
+		<directory.test-resource>junit-resource</directory.test-resource>
 		<directory.eclipse.annotationprocessing>.apt_generated</directory.eclipse.annotationprocessing>
 		
 		<!-- TadukooUtil Group ID -->
 		<tadukoo.util.groupID>com.github.tadukoo.util</tadukoo.util.groupID>
+		<tadukoo.util.version>0.2-Alpha-SNAPSHOT</tadukoo.util.version>
 		
 		<!-- TadukooLang Info -->
 		<tadukoo.util.lang.artifactID>TadukooLang</tadukoo.util.lang.artifactID>
-		<tadukoo.util.lang.version>0.1-Alpha-SNAPSHOT</tadukoo.util.lang.version>
+		<tadukoo.util.lang.version>${tadukoo.util.version}</tadukoo.util.lang.version>
 		
 		<!-- TadukooAnnotationProcessor Info -->
 		<tadukoo.util.annotationprocessor.artifactID>TadukooAnnotationProcessor</tadukoo.util.annotationprocessor.artifactID>
-		<tadukoo.util.annotationprocessor.version>${tadukoo.util.lang.version}</tadukoo.util.annotationprocessor.version>
+		<tadukoo.util.annotationprocessor.version>${tadukoo.util.version}</tadukoo.util.annotationprocessor.version>
 		
 		<!-- TadukooDatabase Info -->
 		<tadukoo.util.database.artifactID>TadukooDatabase</tadukoo.util.database.artifactID>
-		<tadukoo.util.database.version>${tadukoo.util.lang.version}</tadukoo.util.database.version>
+		<tadukoo.util.database.version>${tadukoo.util.version}</tadukoo.util.database.version>
 		
 		<!-- TadukooFileFormat Info -->
 		<tadukoo.util.fileformat.artifactID>TadukooFileFormat</tadukoo.util.fileformat.artifactID>
-		<tadukoo.util.fileformat.version>${tadukoo.util.lang.version}</tadukoo.util.fileformat.version>
+		<tadukoo.util.fileformat.version>${tadukoo.util.version}</tadukoo.util.fileformat.version>
 		
 		<!-- TadukooLookAndFeel Info -->
 		<tadukoo.util.lookandfeel.artifactID>TadukooLookAndFeel</tadukoo.util.lookandfeel.artifactID>
-		<tadukoo.util.lookandfeel.version>${tadukoo.util.lang.version}</tadukoo.util.lookandfeel.version>
+		<tadukoo.util.lookandfeel.version>${tadukoo.util.version}</tadukoo.util.lookandfeel.version>
 		
 		<!-- TadukooUtil Info -->
-		<tadukoo.util.artifactID>TadukooUtil</tadukoo.util.artifactID>
-		<tadukoo.util.version>${tadukoo.util.lang.version}</tadukoo.util.version>
+		<tadukoo.util.util.artifactID>TadukooUtil</tadukoo.util.util.artifactID>
+		<tadukoo.util.util.version>${tadukoo.util.version}</tadukoo.util.util.version>
+		
+		<!-- TadukooView Info -->
+		<tadukoo.util.view.artifactID>TadukooView</tadukoo.util.view.artifactID>
+		<tadukoo.util.view.version>${tadukoo.util.version}</tadukoo.util.view.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -87,8 +107,27 @@
 			<!-- TadukooUtil Dependency -->
 			<dependency>
 				<groupId>${tadukoo.util.groupID}</groupId>
-				<artifactId>${tadukoo.util.artifactID}</artifactId>
-				<version>${tadukoo.util.version}</version>
+				<artifactId>${tadukoo.util.util.artifactID}</artifactId>
+				<version>${tadukoo.util.util.version}</version>
+			</dependency>
+			<!-- TadukooView Dependency -->
+			<dependency>
+				<groupId>${tadukoo.util.groupID}</groupId>
+				<artifactId>${tadukoo.util.view.artifactID}</artifactId>
+				<version>${tadukoo.util.view.version}</version>
+			</dependency>
+			<!-- JUnit Dependencies -->
+			<dependency>
+				<groupId>${junit.jupiter.groupID}</groupId>
+				<artifactId>${junit.jupiter.artifactID}</artifactId>
+				<version>${junit.jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>${junit.platform.groupID}</groupId>
+				<artifactId>${junit.platform.artifactID}</artifactId>
+				<version>${junit.platform.version}</version>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -99,9 +138,35 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.8.0</version>
 					<configuration>
-						<source>${java.source.version}</source>
-						<target>${java.target.version}</target>
+						<release>${java.version}</release>
+						<compilerArgs>--enable-preview</compilerArgs>
 					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.0.0-M4</version>
+					<configuration>
+						<argLine>@{argLine} --enable-preview</argLine>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.8.5</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>prepare-agent</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>report</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>report</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>

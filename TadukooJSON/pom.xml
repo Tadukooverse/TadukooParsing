@@ -9,7 +9,30 @@
 		<version>0.1-Alpha-SNAPSHOT</version>
 	</parent>
 	<artifactId>TadukooJSON</artifactId>
+	<dependencies>
+		<!-- Tadukoo Util -->
+		<dependency>
+			<groupId>${tadukoo.util.groupID}</groupId>
+			<artifactId>${tadukoo.util.util.artifactID}</artifactId>
+		</dependency>
+		<!-- JUnit Stuff -->
+		<dependency>
+			<groupId>${junit.jupiter.groupID}</groupId>
+			<artifactId>${junit.jupiter.artifactID}</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${junit.platform.groupID}</groupId>
+			<artifactId>${junit.platform.artifactID}</artifactId>
+		</dependency>
+	</dependencies>
 	<build>
 		<sourceDirectory>${directory.source}</sourceDirectory>
+		<testSourceDirectory>${directory.test}</testSourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 </project>
