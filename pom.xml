@@ -5,10 +5,32 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.tadukoo.parsing</groupId>
 	<artifactId>TadukooParsingParent</artifactId>
-	<version>0.1-Alpha-SNAPSHOT</version>
+	<version>0.1-Alpha</version>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 	<description>Various libraries for parsing different formats</description>
+	<url>http://github.com/Tadukooverse/TadukooParsing</url>
+	<developers>
+		<developer>
+			<name>Logan Ferree (Tadukoo)</name>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://github.com/Tadukooverse/TadukooParsing/blob/master/LICENSE</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<url>https://github.com/Tadukooverse/TadukooParsing</url>
+		<connection>
+			scm:git:git://github.com/Tadukooverse/TadukooParsing.git
+		</connection>
+		<developerConnection>
+			scm:git:ssh://git@github.com:Tadukooverse/TadukooParsing.git
+		</developerConnection>
+	</scm>
 	<modules>
 		<module>TadukooJSON</module>
 	</modules>
@@ -42,7 +64,7 @@
 		
 		<!-- TadukooUtil Group ID -->
 		<tadukoo.util.groupID>com.github.tadukoo.util</tadukoo.util.groupID>
-		<tadukoo.util.version>0.2-Alpha-SNAPSHOT</tadukoo.util.version>
+		<tadukoo.util.version>0.2-Alpha</tadukoo.util.version>
 		
 		<!-- TadukooLang Info -->
 		<tadukoo.util.lang.artifactID>TadukooLang</tadukoo.util.lang.artifactID>
@@ -72,6 +94,16 @@
 		<tadukoo.util.view.artifactID>TadukooView</tadukoo.util.view.artifactID>
 		<tadukoo.util.view.version>${tadukoo.util.version}</tadukoo.util.view.version>
 	</properties>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 	<dependencyManagement>
 		<dependencies>
 			<!-- TadukooLang Dependency -->
@@ -168,7 +200,70 @@
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>1.6.8</version>
+					<extensions>true</extensions>
+					<configuration>
+						<serverId>ossrh</serverId>
+						<nexusUrl>https://oss.sonatype.org</nexusUrl>
+						<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${maven.source.version}</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar-no-fork</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven.javadoc.version}</version>
+					<configuration>
+						<release>${java.version}</release>
+						<additionalOptions>
+							<additionalOption>--enable-preview</additionalOption>
+						</additionalOptions>
+					</configuration>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>${maven.gpg.version}</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 </project>
