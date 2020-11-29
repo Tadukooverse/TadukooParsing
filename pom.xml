@@ -63,7 +63,7 @@
 		<directory.eclipse.annotationprocessing>.apt_generated</directory.eclipse.annotationprocessing>
 		
 		<!-- Tadukoo Util Versions -->
-		<tadukoo.util.version>0.2-Alpha</tadukoo.util.version>
+		<tadukoo.util.version>0.2.1-Alpha-SNAPSHOT</tadukoo.util.version>
 		<tadukoo.util.annotationprocessor.version>${tadukoo.util.version}</tadukoo.util.annotationprocessor.version>
 		<tadukoo.util.database.version>${tadukoo.util.version}</tadukoo.util.database.version>
 		<tadukoo.util.fileformat.version>${tadukoo.util.version}</tadukoo.util.fileformat.version>
