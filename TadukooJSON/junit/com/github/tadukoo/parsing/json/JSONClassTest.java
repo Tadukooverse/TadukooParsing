@@ -2,16 +2,13 @@ package com.github.tadukoo.parsing.json;
 
 import com.github.tadukoo.util.map.MapUtil;
 import com.github.tadukoo.util.pojo.AbstractMappedPojo;
-import com.github.tadukoo.util.pojo.MappedPojo;
 import com.github.tadukoo.util.tuple.Pair;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JSONClassTest{
 	private JSONClass clazz = new AbstractJSONClass(){ };

@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OrderedJSONClassTest{
 	private OrderedJSONClass clazz = new AbstractOrderedJSONClass(){
