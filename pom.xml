@@ -33,12 +33,13 @@
 	</scm>
 	<modules>
 		<module>TadukooJSON</module>
+		<module>TadukooJava</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
 		<!-- Java and JUnit Versions -->
-		<java.version>14</java.version>
+		<java.version>15</java.version>
 		<junit.jupiter.version>5.7.0</junit.jupiter.version>
 		<junit.platform.version>1.7.0</junit.platform.version>
 		
@@ -156,23 +157,19 @@
 			<plugins>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.0</version>
+					<version>${maven.compiler.version}</version>
 					<configuration>
 						<release>${java.version}</release>
-						<compilerArgs>--enable-preview</compilerArgs>
 					</configuration>
 				</plugin>
 				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M4</version>
-					<configuration>
-						<argLine>@{argLine} --enable-preview</argLine>
-					</configuration>
+					<version>${maven.surefire.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.5</version>
+					<version>0.8.6</version>
 					<executions>
 						<execution>
 							<goals>
@@ -218,9 +215,6 @@
 					<version>${maven.javadoc.version}</version>
 					<configuration>
 						<release>${java.version}</release>
-						<additionalOptions>
-							<additionalOption>--enable-preview</additionalOption>
-						</additionalOptions>
 					</configuration>
 					<executions>
 						<execution>
