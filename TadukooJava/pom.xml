@@ -8,12 +8,12 @@
 		<groupId>com.github.tadukoo.parsing</groupId>
 		<version>0.2.2-Alpha</version>
 	</parent>
-	<artifactId>TadukooJSON</artifactId>
+	<artifactId>TadukooJava</artifactId>
 	<dependencies>
-		<!-- Tadukoo Util -->
+		<!-- Tadukoo Lang -->
 		<dependency>
 			<groupId>${tadukoo.util.groupID}</groupId>
-			<artifactId>${tadukoo.util.util.artifactID}</artifactId>
+			<artifactId>${tadukoo.util.lang.artifactID}</artifactId>
 		</dependency>
 		<!-- JUnit Stuff -->
 		<dependency>

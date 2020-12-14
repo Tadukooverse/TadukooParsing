@@ -1,6 +1,9 @@
 package com.github.tadukoo.parsing.json;
 
 import com.github.tadukoo.util.ListUtil;
+import com.github.tadukoo.util.map.MapUtil;
+import com.github.tadukoo.util.pojo.AbstractMappedPojo;
+import com.github.tadukoo.util.tuple.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -8,10 +11,9 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OrderedJSONClassTest{
-	private final OrderedJSONClass clazz = new AbstractOrderedJSONClass(){
+	private OrderedJSONClass clazz = new AbstractOrderedJSONClass(){
 		@Override
 		public List<String> getKeyOrder(){
 			return ListUtil.createList("Derp", "Test");
@@ -21,6 +23,27 @@ public class OrderedJSONClassTest{
 	@Test
 	public void testConstructor(){
 		assertTrue(clazz.getMap().isEmpty());
+	}
+	
+	@Test
+	public void testPojoConstructor(){
+		clazz = new AbstractOrderedJSONClass(new AbstractMappedPojo(){
+			@Override
+			public Map<String, Object> getMap(){
+				return MapUtil.createMap(Pair.of("Derp", 5), Pair.of("Test", true));
+			}
+		}){
+			@Override
+			public List<String> getKeyOrder(){
+				return ListUtil.createList("Derp", "Test");
+			}
+		};
+		Map<String, Object> map = clazz.getMap();
+		assertFalse(map.isEmpty());
+		assertTrue(map.containsKey("Derp"));
+		assertEquals(5, map.get("Derp"));
+		assertTrue(map.containsKey("Test"));
+		assertTrue((Boolean) map.get("Test"));
 	}
 	
 	@Test

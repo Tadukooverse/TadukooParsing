@@ -272,22 +272,22 @@ public class JSONConverter{
 	public String convertToJSON(Object obj){
 		if(obj == null){
 			return "null";
-		}else if(obj instanceof JSONObject jsonObj){
-			return jsonObj.convertToJSON(this);
-		}else if(obj instanceof Boolean b){
-			return String.valueOf(b);
-		}else if(obj instanceof Integer i){
-			return String.valueOf(i);
-		}else if(obj instanceof Short s){
-			return String.valueOf(s);
-		}else if(obj instanceof Long l){
-			return String.valueOf(l);
-		}else if(obj instanceof Float f){
-			return Float.toString(f);
-		}else if(obj instanceof Double d){
-			return Double.toString(d);
-		}else if(obj instanceof String s){
-			return "\"" + s + "\"";
+		}else if(obj instanceof JSONObject){
+			return ((JSONObject) obj).convertToJSON(this);
+		}else if(obj instanceof Boolean){
+			return String.valueOf(obj);
+		}else if(obj instanceof Integer){
+			return String.valueOf(obj);
+		}else if(obj instanceof Short){
+			return String.valueOf(obj);
+		}else if(obj instanceof Long){
+			return String.valueOf(obj);
+		}else if(obj instanceof Float){
+			return Float.toString((Float) obj);
+		}else if(obj instanceof Double){
+			return Double.toString((Double) obj);
+		}else if(obj instanceof String){
+			return "\"" + obj + "\"";
 		}else{
 			throw new IllegalArgumentException("Unknown how to convert object into JSON string" +
 					"type: " + obj.getClass().getCanonicalName());
