@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.tadukoo.parsing</groupId>
 	<artifactId>TadukooParsingParent</artifactId>
-	<version>0.2-Alpha-SNAPSHOT</version>
+	<version>0.2.2-Alpha-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 	<description>Various libraries for parsing different formats</description>
@@ -34,6 +34,7 @@
 	<modules>
 		<module>TadukooJSON</module>
 		<module>TadukooJava</module>
+		<module>TadukooFileFormat</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -64,24 +65,16 @@
 		<directory.eclipse.annotationprocessing>.apt_generated</directory.eclipse.annotationprocessing>
 		
 		<!-- Tadukoo Util Versions -->
-		<tadukoo.util.version>0.2.1-Alpha-SNAPSHOT</tadukoo.util.version>
-		<tadukoo.util.annotationprocessor.version>${tadukoo.util.version}</tadukoo.util.annotationprocessor.version>
-		<tadukoo.util.database.version>${tadukoo.util.version}</tadukoo.util.database.version>
-		<tadukoo.util.fileformat.version>${tadukoo.util.version}</tadukoo.util.fileformat.version>
+		<tadukoo.util.version>0.2.2-Alpha-SNAPSHOT</tadukoo.util.version>
 		<tadukoo.util.lang.version>${tadukoo.util.version}</tadukoo.util.lang.version>
-		<tadukoo.util.lookandfeel.version>${tadukoo.util.version}</tadukoo.util.lookandfeel.version>
+		<tadukoo.util.functions.version>${tadukoo.util.version}</tadukoo.util.functions.version>
 		<tadukoo.util.util.version>${tadukoo.util.version}</tadukoo.util.util.version>
-		<tadukoo.util.view.version>${tadukoo.util.version}</tadukoo.util.view.version>
 		
 		<!-- TadukooUtil Info -->
 		<tadukoo.util.groupID>com.github.tadukoo.util</tadukoo.util.groupID>
-		<tadukoo.util.annotationprocessor.artifactID>TadukooAnnotationProcessor</tadukoo.util.annotationprocessor.artifactID>
-		<tadukoo.util.database.artifactID>TadukooDatabase</tadukoo.util.database.artifactID>
-		<tadukoo.util.fileformat.artifactID>TadukooFileFormat</tadukoo.util.fileformat.artifactID>
 		<tadukoo.util.lang.artifactID>TadukooLang</tadukoo.util.lang.artifactID>
-		<tadukoo.util.lookandfeel.artifactID>TadukooLookAndFeel</tadukoo.util.lookandfeel.artifactID>
+		<tadukoo.util.functions.artifactID>TadukooFunctions</tadukoo.util.functions.artifactID>
 		<tadukoo.util.util.artifactID>TadukooUtil</tadukoo.util.util.artifactID>
-		<tadukoo.util.view.artifactID>TadukooView</tadukoo.util.view.artifactID>
 	</properties>
 	<distributionManagement>
 		<snapshotRepository>
@@ -101,41 +94,17 @@
 				<artifactId>${tadukoo.util.lang.artifactID}</artifactId>
 				<version>${tadukoo.util.lang.version}</version>
 			</dependency>
-			<!-- TadukooAnnotationProcessor Dependency -->
+			<!-- TadukooFunctions Dependency -->
 			<dependency>
 				<groupId>${tadukoo.util.groupID}</groupId>
-				<artifactId>${tadukoo.util.annotationprocessor.artifactID}</artifactId>
-				<version>${tadukoo.util.annotationprocessor.version}</version>
-			</dependency>
-			<!-- TadukooDatabase Dependency -->
-			<dependency>
-				<groupId>${tadukoo.util.groupID}</groupId>
-				<artifactId>${tadukoo.util.database.artifactID}</artifactId>
-				<version>${tadukoo.util.database.version}</version>
-			</dependency>
-			<!-- TadukooFileFormat Dependency -->
-			<dependency>
-				<groupId>${tadukoo.util.groupID}</groupId>
-				<artifactId>${tadukoo.util.fileformat.artifactID}</artifactId>
-				<version>${tadukoo.util.fileformat.version}</version>
-			</dependency>
-			<!-- TadukooLookAndFeel Dependency -->
-			<dependency>
-				<groupId>${tadukoo.util.groupID}</groupId>
-				<artifactId>${tadukoo.util.lookandfeel.artifactID}</artifactId>
-				<version>${tadukoo.util.lookandfeel.version}</version>
+				<artifactId>${tadukoo.util.functions.artifactID}</artifactId>
+				<version>${tadukoo.util.functions.version}</version>
 			</dependency>
 			<!-- TadukooUtil Dependency -->
 			<dependency>
 				<groupId>${tadukoo.util.groupID}</groupId>
 				<artifactId>${tadukoo.util.util.artifactID}</artifactId>
 				<version>${tadukoo.util.util.version}</version>
-			</dependency>
-			<!-- TadukooView Dependency -->
-			<dependency>
-				<groupId>${tadukoo.util.groupID}</groupId>
-				<artifactId>${tadukoo.util.view.artifactID}</artifactId>
-				<version>${tadukoo.util.view.version}</version>
 			</dependency>
 			<!-- JUnit Dependencies -->
 			<dependency>
