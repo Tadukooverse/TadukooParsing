@@ -32,6 +32,7 @@
 		</developerConnection>
 	</scm>
 	<modules>
+		<module>TadukooParsing</module>
 		<module>TadukooJSON</module>
 		<module>TadukooJava</module>
 		<module>TadukooFileFormat</module>
@@ -105,6 +106,12 @@
 				<groupId>${tadukoo.util.groupID}</groupId>
 				<artifactId>${tadukoo.util.util.artifactID}</artifactId>
 				<version>${tadukoo.util.util.version}</version>
+			</dependency>
+			<!-- TadukooParsing Dependency -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>TadukooParsing</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 			<!-- JUnit Dependencies -->
 			<dependency>

@@ -1,29 +1,22 @@
 package com.github.tadukoo.parsing.json;
 
+import com.github.tadukoo.parsing.CommonPatterns;
 import com.github.tadukoo.util.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A class able to parse JSON into JSON Objects (either a class or array), and to convert classes or objects
  * into JSON strings.
  *
  * @author Logan Ferree (Tadukoo)
- * @version Alpha v.0.1
+ * @version Alpha v.0.3
+ * @since Alpha v.0.1
  */
-public class JSONConverter{
-	/** Pattern to match null (literally just the word null lol) */
-	private static final Pattern nullFormat = Pattern.compile("(null)");
-	/** Pattern to match a boolean (true or false) */
-	private static final Pattern booleanFormat = Pattern.compile("(true|false)");
-	/** Pattern to match a number (e.g. 3, 4.192, or 1.928E32) */
-	private static final Pattern numberFormat = Pattern.compile("((-)?(\\d)*(\\.\\d*)?(E([+\\-])\\d*)?)");
-	/** Pattern to match a string (e.g. "some_string") */
-	private static final Pattern stringFormat = Pattern.compile("\"((?:\\\\\"|[^\"])*)\"");
+public class JSONConverter implements CommonPatterns{
 	/** Character at the start of an array - opening bracket - [ */
 	public static final char arrayStartChar = '[';
 	/** Character at the end of an array - closing bracket - ] */
@@ -63,7 +56,7 @@ public class JSONConverter{
 		nullFormatMatcher = nullFormat.matcher(JSONString);
 		booleanFormatMatcher = booleanFormat.matcher(JSONString);
 		numberFormatMatcher = numberFormat.matcher(JSONString);
-		stringFormatMatcher = stringFormat.matcher(JSONString);
+		stringFormatMatcher = quotedStringFormat.matcher(JSONString);
 		
 		// Skip over leading whitespace
 		charIndex = skipWhitespace(JSONString, charIndex);
