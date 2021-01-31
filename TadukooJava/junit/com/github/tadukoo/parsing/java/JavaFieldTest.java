@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -22,6 +23,11 @@ public class JavaFieldTest{
 	@Test
 	public void testDefaultVisibility(){
 		assertEquals(Visibility.PRIVATE, field.getVisibility());
+	}
+	
+	@Test
+	public void testDefaultValue(){
+		assertNull(field.getValue());
 	}
 	
 	@Test
@@ -64,6 +70,15 @@ public class JavaFieldTest{
 				.build();
 		
 		assertEquals(Visibility.PUBLIC, field.getVisibility());
+	}
+	
+	@Test
+	public void testSetValue(){
+		field = JavaField.builder()
+				.type("int").name("test")
+				.value("42")
+				.build();
+		assertEquals("42", field.getValue());
 	}
 	
 	@Test
@@ -131,6 +146,30 @@ public class JavaFieldTest{
 				@Test
 				@Derp
 				private int test""";
+		assertEquals(javaString, field.toString());
+	}
+	
+	@Test
+	public void testToStringWithValue(){
+		field = JavaField.builder()
+				.type("int").name("test")
+				.value("42")
+				.build();
+		assertEquals("private int test = 42", field.toString());
+	}
+	
+	@Test
+	public void testToStringWithEverything(){
+		field = JavaField.builder()
+				.type("int").name("test")
+				.annotation(JavaAnnotation.builder().name("Test").build())
+				.annotation(JavaAnnotation.builder().name("Derp").build())
+				.value("42")
+				.build();
+		String javaString = """
+				@Test
+				@Derp
+				private int test = 42""";
 		assertEquals(javaString, field.toString());
 	}
 }

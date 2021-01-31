@@ -45,6 +45,11 @@ public class JavaField{
 	 *         <td>The name of the field</td>
 	 *         <td>Required</td>
 	 *     </tr>
+	 *     <tr>
+	 *         <td>value</td>
+	 *         <td>The value assigned to the field</td>
+	 *         <td>null</td>
+	 *     </tr>
 	 * </table>
 	 *
 	 * @author Logan Ferree (Tadukoo)
@@ -60,6 +65,8 @@ public class JavaField{
 		private String type = null;
 		/** The name of the field */
 		private String name = null;
+		/** The value assigned to the field */
+		private String value = null;
 		
 		// Can't create outside of JavaField
 		private JavaFieldBuilder(){ }
@@ -110,6 +117,15 @@ public class JavaField{
 		}
 		
 		/**
+		 * @param value The value assigned to the field
+		 * @return this, to continue building
+		 */
+		public JavaFieldBuilder value(String value){
+			this.value = value;
+			return this;
+		}
+		
+		/**
 		 * Checks for any errors in the current parameters
 		 *
 		 * @throws IllegalArgumentException if anything is wrong
@@ -139,7 +155,7 @@ public class JavaField{
 		public JavaField build(){
 			checkForErrors();
 			
-			return new JavaField(annotations, visibility, type, name);
+			return new JavaField(annotations, visibility, type, name, value);
 		}
 	}
 	
@@ -151,6 +167,8 @@ public class JavaField{
 	private final String type;
 	/** The name of the field */
 	private final String name;
+	/** The value assigned to the field */
+	private final String value;
 	
 	/**
 	 * Constructs a Java Field with the given parameters
@@ -159,12 +177,14 @@ public class JavaField{
 	 * @param visibility The {@link Visibility} of the field
 	 * @param type The type of the field
 	 * @param name The name of the field
+	 * @param value The value assigned to the field
 	 */
-	private JavaField(List<JavaAnnotation> annotations, Visibility visibility, String type, String name){
+	private JavaField(List<JavaAnnotation> annotations, Visibility visibility, String type, String name, String value){
 		this.annotations = annotations;
 		this.visibility = visibility;
 		this.type = type;
 		this.name = name;
+		this.value = value;
 	}
 	
 	/**
@@ -203,6 +223,13 @@ public class JavaField{
 	}
 	
 	/**
+	 * @return The value assigned to the field
+	 */
+	public String getValue(){
+		return value;
+	}
+	
+	/**
 	 * @return A string of the form "{visibility.getText()} {type} {name}", with annotations on newlines above
 	 */
 	@Override
@@ -217,7 +244,12 @@ public class JavaField{
 		}
 		
 		// Add field declaration
-		content.add(visibility.getText() + " " + type + " " + name);
+		String declaration = visibility.getText() + " " + type + " " + name;
+		// Add value to declaration if we have one
+		if(StringUtil.isNotBlank(value)){
+			declaration += " = " + value;
+		}
+		content.add(declaration);
 		
 		return StringUtil.buildStringWithNewLines(content);
 	}
