@@ -20,6 +20,12 @@ public class JavaClassTest{
 	}
 	
 	@Test
+	public void testDefaultAnnotations(){
+		assertNotNull(clazz.getAnnotations());
+		assertTrue(clazz.getAnnotations().isEmpty());
+	}
+	
+	@Test
 	public void testDefaultVisibility(){
 		assertEquals(Visibility.PUBLIC, clazz.getVisibility());
 	}
@@ -64,6 +70,30 @@ public class JavaClassTest{
 		List<String> imports = clazz.getImports();
 		assertEquals(1, imports.size());
 		assertEquals("com.example.*", imports.get(0));
+	}
+	
+	@Test
+	public void testSetAnnotations(){
+		JavaAnnotation test = JavaAnnotation.builder().name("Test").build();
+		JavaAnnotation derp = JavaAnnotation.builder().name("Derp").build();
+		List<JavaAnnotation> annotations = ListUtil.createList(test, derp);
+		clazz = JavaClass.builder()
+				.packageName("some.package").className("AClassName")
+				.annotations(annotations)
+				.build();
+		assertEquals(annotations, clazz.getAnnotations());
+	}
+	
+	@Test
+	public void testSetSingleAnnotation(){
+		JavaAnnotation test = JavaAnnotation.builder().name("Test").build();
+		clazz = JavaClass.builder()
+				.packageName("some.package").className("AClassName")
+				.annotation(test)
+				.build();
+		List<JavaAnnotation> annotations = clazz.getAnnotations();
+		assertEquals(1, annotations.size());
+		assertEquals(test, annotations.get(0));
 	}
 	
 	@Test
@@ -201,6 +231,27 @@ public class JavaClassTest{
 	}
 	
 	@Test
+	public void testToStringWithAnnotations(){
+		JavaAnnotation test = JavaAnnotation.builder().name("Test").build();
+		JavaAnnotation derp = JavaAnnotation.builder().name("Derp").build();
+		List<JavaAnnotation> annotations = ListUtil.createList(test, derp);
+		clazz = JavaClass.builder()
+				.packageName("some.package").className("AClassName")
+				.annotations(annotations)
+				.build();
+		String javaString = """
+				package some.package;
+				
+				@Test
+				@Derp
+				public class AClassName{
+				\t
+				}
+				""";
+		assertEquals(javaString, clazz.toString());
+	}
+	
+	@Test
 	public void testToStringWithImports(){
 		clazz = JavaClass.builder()
 				.packageName("some.package").className("AClassName")
@@ -267,6 +318,8 @@ public class JavaClassTest{
 		clazz = JavaClass.builder()
 				.packageName("some.package")
 				.imports(ListUtil.createList("com.example.*", "com.github.tadukoo.*"))
+				.annotation(JavaAnnotation.builder().name("Test").build())
+				.annotation(JavaAnnotation.builder().name("Derp").build())
 				.className("AClassName").superClassName("AnotherClassName")
 				.field(JavaField.builder().type("int").name("test").build())
 				.field(JavaField.builder().type("String").name("derp").build())
@@ -280,6 +333,8 @@ public class JavaClassTest{
 				import com.example.*;
 				import com.github.tadukoo.*;
 				
+				@Test
+				@Derp
 				public class AClassName extends AnotherClassName{
 				\t
 					private int test;

@@ -10,7 +10,8 @@ import java.util.List;
  * Java Class is used to represent a class in Java.
  *
  * @author Logan Ferree (Tadukoo)
- * @version Alpha v.0.2
+ * @version Alpha v.0.3
+ * @since Alpha v.0.2
  */
 public class JavaClass{
 	
@@ -32,6 +33,11 @@ public class JavaClass{
 	 *     <tr>
 	 *         <td>imports</td>
 	 *         <td>The classes imported by the class</td>
+	 *         <td>An empty list</td>
+	 *     </tr>
+	 *     <tr>
+	 *         <td>annotations</td>
+	 *         <td>The {@link JavaAnnotation annotations} on the class</td>
 	 *         <td>An empty list</td>
 	 *     </tr>
 	 *     <tr>
@@ -62,13 +68,16 @@ public class JavaClass{
 	 * </table>
 	 *
 	 * @author Logan Ferree (Tadukoo)
-	 * @version Alpha v.0.2
+	 * @version Alpha v.0.3
+	 * @since Alpha v.0.2
 	 */
 	public static class JavaClassBuilder{
 		/** The name of the package the class is in */
 		private String packageName = null;
 		/** The classes imported by the class */
 		private List<String> imports = new ArrayList<>();
+		/** The {@link JavaAnnotation annotations} on the class */
+		private List<JavaAnnotation> annotations = new ArrayList<>();
 		/** The {@link Visibility} of the class */
 		private Visibility visibility = Visibility.PUBLIC;
 		/** The name of the class */
@@ -107,6 +116,24 @@ public class JavaClass{
 		 */
 		public JavaClassBuilder singleImport(String singleImport){
 			imports.add(singleImport);
+			return this;
+		}
+		
+		/**
+		 * @param annotations The {@link JavaAnnotation annotations} on the class
+		 * @return this, to continue building
+		 */
+		public JavaClassBuilder annotations(List<JavaAnnotation> annotations){
+			this.annotations = annotations;
+			return this;
+		}
+		
+		/**
+		 * @param annotation A single {@link JavaAnnotation annotation} on the class
+		 * @return this, to continue building
+		 */
+		public JavaClassBuilder annotation(JavaAnnotation annotation){
+			annotations.add(annotation);
 			return this;
 		}
 		
@@ -205,7 +232,8 @@ public class JavaClass{
 			checkForErrors();
 			
 			// Actually build the Java Class
-			return new JavaClass(packageName, imports, visibility, className, superClassName, fields, methods);
+			return new JavaClass(packageName, imports, annotations,
+					visibility, className, superClassName, fields, methods);
 		}
 	}
 	
@@ -213,6 +241,8 @@ public class JavaClass{
 	private final String packageName;
 	/** The classes imported by the class */
 	private final List<String> imports;
+	/** The {@link JavaAnnotation annotations} on the class */
+	private final List<JavaAnnotation> annotations;
 	/** The {@link Visibility} of the class */
 	private final Visibility visibility;
 	/** The name of the class */
@@ -229,17 +259,19 @@ public class JavaClass{
 	 *
 	 * @param packageName The name of the package the class is in
 	 * @param imports The classes imported by the class
+	 * @param annotations The {@link JavaAnnotation annotations} on the class
 	 * @param visibility The {@link Visibility} of the class
 	 * @param className The name of the class
 	 * @param superClassName The name of the class this one extends (may be null)
 	 * @param fields The {@link JavaField fields} on the class
 	 * @param methods The {@link JavaMethod methods} in the class
 	 */
-	private JavaClass(String packageName, List<String> imports,
+	private JavaClass(String packageName, List<String> imports, List<JavaAnnotation> annotations,
 	                  Visibility visibility, String className, String superClassName,
 	                  List<JavaField> fields, List<JavaMethod> methods){
 		this.packageName = packageName;
 		this.imports = imports;
+		this.annotations = annotations;
 		this.visibility = visibility;
 		this.className = className;
 		this.superClassName = superClassName;
@@ -266,6 +298,13 @@ public class JavaClass{
 	 */
 	public List<String> getImports(){
 		return imports;
+	}
+	
+	/**
+	 * @return The {@link JavaAnnotation annotations} on the class
+	 */
+	public List<JavaAnnotation> getAnnotations(){
+		return annotations;
 	}
 	
 	/**
@@ -323,8 +362,15 @@ public class JavaClass{
 			}
 		}
 		
-		// Newline between package declaration/imports + class declaration
+		// Newline between package declaration/imports + annotations/class declaration
 		content.add("");
+		
+		// Annotations
+		if(ListUtil.isNotBlank(annotations)){
+			for(JavaAnnotation annotation: annotations){
+				content.add(annotation.toString());
+			}
+		}
 		
 		// Class Declaration
 		content.add(visibility.getText() + " class " + className +
