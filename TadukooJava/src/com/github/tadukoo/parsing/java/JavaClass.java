@@ -36,6 +36,11 @@ public class JavaClass{
 	 *         <td>An empty list</td>
 	 *     </tr>
 	 *     <tr>
+	 *         <td>staticImports</td>
+	 *         <td>The classes imported statically by the class</td>
+	 *         <td>An empty list</td>
+	 *     </tr>
+	 *     <tr>
 	 *         <td>annotations</td>
 	 *         <td>The {@link JavaAnnotation annotations} on the class</td>
 	 *         <td>An empty list</td>
@@ -76,6 +81,8 @@ public class JavaClass{
 		private String packageName = null;
 		/** The classes imported by the class */
 		private List<String> imports = new ArrayList<>();
+		/** The classes imported statically by the class */
+		private List<String> staticImports = new ArrayList<>();
 		/** The {@link JavaAnnotation annotations} on the class */
 		private List<JavaAnnotation> annotations = new ArrayList<>();
 		/** The {@link Visibility} of the class */
@@ -116,6 +123,24 @@ public class JavaClass{
 		 */
 		public JavaClassBuilder singleImport(String singleImport){
 			imports.add(singleImport);
+			return this;
+		}
+		
+		/**
+		 * @param staticImports The classes imported statically by the class
+		 * @return this, to continue building
+		 */
+		public JavaClassBuilder staticImports(List<String> staticImports){
+			this.staticImports = staticImports;
+			return this;
+		}
+		
+		/**
+		 * @param staticImport A single class imported statically by the class, to be added to the list
+		 * @return this, to continue building
+		 */
+		public JavaClassBuilder staticImport(String staticImport){
+			staticImports.add(staticImport);
 			return this;
 		}
 		
@@ -232,7 +257,7 @@ public class JavaClass{
 			checkForErrors();
 			
 			// Actually build the Java Class
-			return new JavaClass(packageName, imports, annotations,
+			return new JavaClass(packageName, imports, staticImports, annotations,
 					visibility, className, superClassName, fields, methods);
 		}
 	}
@@ -241,6 +266,8 @@ public class JavaClass{
 	private final String packageName;
 	/** The classes imported by the class */
 	private final List<String> imports;
+	/** The classes imported statically by the class */
+	private final List<String> staticImports;
 	/** The {@link JavaAnnotation annotations} on the class */
 	private final List<JavaAnnotation> annotations;
 	/** The {@link Visibility} of the class */
@@ -259,6 +286,7 @@ public class JavaClass{
 	 *
 	 * @param packageName The name of the package the class is in
 	 * @param imports The classes imported by the class
+	 * @param staticImports The classes imported statically by the class
 	 * @param annotations The {@link JavaAnnotation annotations} on the class
 	 * @param visibility The {@link Visibility} of the class
 	 * @param className The name of the class
@@ -266,11 +294,13 @@ public class JavaClass{
 	 * @param fields The {@link JavaField fields} on the class
 	 * @param methods The {@link JavaMethod methods} in the class
 	 */
-	private JavaClass(String packageName, List<String> imports, List<JavaAnnotation> annotations,
+	private JavaClass(String packageName, List<String> imports, List<String> staticImports,
+	                  List<JavaAnnotation> annotations,
 	                  Visibility visibility, String className, String superClassName,
 	                  List<JavaField> fields, List<JavaMethod> methods){
 		this.packageName = packageName;
 		this.imports = imports;
+		this.staticImports = staticImports;
 		this.annotations = annotations;
 		this.visibility = visibility;
 		this.className = className;
@@ -298,6 +328,13 @@ public class JavaClass{
 	 */
 	public List<String> getImports(){
 		return imports;
+	}
+	
+	/**
+	 * @return The classes imported statically by the class
+	 */
+	public List<String> getStaticImports(){
+		return staticImports;
 	}
 	
 	/**
@@ -359,6 +396,15 @@ public class JavaClass{
 			content.add("");
 			for(String singleImport: imports){
 				content.add("import " + singleImport + ";");
+			}
+		}
+		
+		// Static Import Statements
+		if(ListUtil.isNotBlank(staticImports)){
+			// Newline between package declaration/imports + static imports
+			content.add("");
+			for(String staticImport: staticImports){
+				content.add("import static " + staticImport + ";");
 			}
 		}
 		

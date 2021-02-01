@@ -5,8 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class JavaClassTest{
 	private JavaClass clazz = JavaClass.builder()
@@ -17,6 +20,12 @@ public class JavaClassTest{
 	public void testDefaultImports(){
 		assertNotNull(clazz.getImports());
 		assertTrue(clazz.getImports().isEmpty());
+	}
+	
+	@Test
+	public void testDefaultStaticImports(){
+		assertNotNull(clazz.getStaticImports());
+		assertTrue(clazz.getStaticImports().isEmpty());
 	}
 	
 	@Test
@@ -70,6 +79,27 @@ public class JavaClassTest{
 		List<String> imports = clazz.getImports();
 		assertEquals(1, imports.size());
 		assertEquals("com.example.*", imports.get(0));
+	}
+	
+	@Test
+	public void testSetStaticImports(){
+		List<String> staticImports = ListUtil.createList("com.example.Test", "com.github.tadukoo.*");
+		clazz = JavaClass.builder()
+				.packageName("some.package").className("AClassName")
+				.staticImports(staticImports)
+				.build();
+		assertEquals(staticImports, clazz.getStaticImports());
+	}
+	
+	@Test
+	public void testSetSingleStaticImport(){
+		clazz = JavaClass.builder()
+				.packageName("some.package").className("AClassName")
+				.staticImport("com.github.tadukoo.*")
+				.build();
+		List<String> staticImports = clazz.getStaticImports();
+		assertEquals(1, staticImports.size());
+		assertEquals("com.github.tadukoo.*", staticImports.get(0));
 	}
 	
 	@Test
@@ -271,6 +301,25 @@ public class JavaClassTest{
 	}
 	
 	@Test
+	public void testToStringWithStaticImports(){
+		clazz = JavaClass.builder()
+				.packageName("some.package").className("AClassName")
+				.staticImports(ListUtil.createList("com.example.Test", "com.github.tadukoo.test.*"))
+				.build();
+		String javaString = """
+				package some.package;
+				
+				import static com.example.Test;
+				import static com.github.tadukoo.test.*;
+				
+				public class AClassName{
+				\t
+				}
+				""";
+		assertEquals(javaString, clazz.toString());
+	}
+	
+	@Test
 	public void testToStringWithFields(){
 		clazz = JavaClass.builder()
 				.packageName("some.package").className("AClassName")
@@ -318,6 +367,7 @@ public class JavaClassTest{
 		clazz = JavaClass.builder()
 				.packageName("some.package")
 				.imports(ListUtil.createList("com.example.*", "com.github.tadukoo.*"))
+				.staticImports(ListUtil.createList("com.example.Test", "com.github.tadukoo.test.*"))
 				.annotation(JavaAnnotation.builder().name("Test").build())
 				.annotation(JavaAnnotation.builder().name("Derp").build())
 				.className("AClassName").superClassName("AnotherClassName")
@@ -332,6 +382,9 @@ public class JavaClassTest{
 				
 				import com.example.*;
 				import com.github.tadukoo.*;
+				
+				import static com.example.Test;
+				import static com.github.tadukoo.test.*;
 				
 				@Test
 				@Derp
