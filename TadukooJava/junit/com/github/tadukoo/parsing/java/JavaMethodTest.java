@@ -6,10 +6,18 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class JavaMethodTest{
 	private JavaMethod method = JavaMethod.builder().returnType("int").build();
+	
+	@Test
+	public void testDefaultAnnotations(){
+		assertTrue(method.getAnnotations().isEmpty());
+	}
 	
 	@Test
 	public void testDefaultVisibility(){
@@ -29,6 +37,24 @@ public class JavaMethodTest{
 	@Test
 	public void testDefaultLines(){
 		assertTrue(method.getLines().isEmpty());
+	}
+	
+	@Test
+	public void testSetAnnotations(){
+		JavaAnnotation test = JavaAnnotation.builder().name("Test").build();
+		JavaAnnotation derp = JavaAnnotation.builder().name("Derp").build();
+		List<JavaAnnotation> annotations = ListUtil.createList(test, derp);
+		method = JavaMethod.builder().annotations(annotations).returnType("String").build();
+		assertEquals(annotations, method.getAnnotations());
+	}
+	
+	@Test
+	public void testSetAnnotation(){
+		JavaAnnotation test = JavaAnnotation.builder().name("Test").build();
+		method = JavaMethod.builder().annotation(test).returnType("String").build();
+		List<JavaAnnotation> annotations = method.getAnnotations();
+		assertEquals(1, annotations.size());
+		assertEquals(test, annotations.get(0));
 	}
 	
 	@Test
@@ -110,6 +136,30 @@ public class JavaMethodTest{
 	}
 	
 	@Test
+	public void testToStringWithSingleAnnotation(){
+		JavaAnnotation test = JavaAnnotation.builder().name("Test").build();
+		method = JavaMethod.builder().returnType("int").annotation(test).build();
+		String javaString = """
+				@Test
+				public int(){
+				}""";
+		assertEquals(javaString, method.toString());
+	}
+	
+	@Test
+	public void testToStringWithAnnotations(){
+		JavaAnnotation test = JavaAnnotation.builder().name("Test").build();
+		JavaAnnotation derp = JavaAnnotation.builder().name("Derp").build();
+		method = JavaMethod.builder().returnType("int").annotation(test).annotation(derp).build();
+		String javaString = """
+				@Test
+				@Derp
+				public int(){
+				}""";
+		assertEquals(javaString, method.toString());
+	}
+	
+	@Test
 	public void testToStringWithName(){
 		method = JavaMethod.builder().returnType("int").name("someMethod").build();
 		String javaString = """
@@ -150,10 +200,15 @@ public class JavaMethodTest{
 	
 	@Test
 	public void testToStringWithEverything(){
-		method = JavaMethod.builder().returnType("int").name("someMethod")
+		JavaAnnotation test = JavaAnnotation.builder().name("Test").build();
+		JavaAnnotation derp = JavaAnnotation.builder().name("Derp").build();
+		method = JavaMethod.builder().returnType("int")
+				.annotation(test).annotation(derp).name("someMethod")
 				.parameter("String", "text").parameter("int", "something")
 				.line("doSomething();").line("return 42;").build();
 		String javaString = """
+				@Test
+				@Derp
 				public int someMethod(String text, int something){
 					doSomething();
 					return 42;

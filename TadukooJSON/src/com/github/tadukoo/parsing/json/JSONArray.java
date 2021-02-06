@@ -16,6 +16,11 @@ public interface JSONArray extends JSONObject{
 	 */
 	List<Object> getItems();
 	
+	/**
+	 * @return The number of items in the array
+	 */
+	int size();
+	
 	/** {@inheritDoc} */
 	@Override
 	default String convertToJSON(JSONConverter converter){

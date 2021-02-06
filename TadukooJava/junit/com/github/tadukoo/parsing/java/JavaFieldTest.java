@@ -1,8 +1,13 @@
 package com.github.tadukoo.parsing.java;
 
+import com.github.tadukoo.util.ListUtil;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class JavaFieldTest{
@@ -11,8 +16,18 @@ public class JavaFieldTest{
 			.build();
 	
 	@Test
+	public void testDefaultAnnotations(){
+		assertTrue(field.getAnnotations().isEmpty());
+	}
+	
+	@Test
 	public void testDefaultVisibility(){
 		assertEquals(Visibility.PRIVATE, field.getVisibility());
+	}
+	
+	@Test
+	public void testDefaultValue(){
+		assertNull(field.getValue());
 	}
 	
 	@Test
@@ -26,12 +41,44 @@ public class JavaFieldTest{
 	}
 	
 	@Test
+	public void testSetAnnotations(){
+		JavaAnnotation test = JavaAnnotation.builder().name("Test").build();
+		JavaAnnotation derp = JavaAnnotation.builder().name("Derp").build();
+		List<JavaAnnotation> annotations = ListUtil.createList(test, derp);
+		field = JavaField.builder()
+				.annotations(annotations)
+				.type("int").name("test")
+				.build();
+		assertEquals(annotations, field.getAnnotations());
+	}
+	
+	@Test
+	public void testSetAnnotation(){
+		JavaAnnotation test = JavaAnnotation.builder().name("Test").build();
+		field = JavaField.builder()
+				.annotation(test)
+				.type("int").name("Test").build();
+		List<JavaAnnotation> annotations = field.getAnnotations();
+		assertEquals(1, annotations.size());
+		assertEquals(test, annotations.get(0));
+	}
+	
+	@Test
 	public void testSetVisibility(){
 		field = JavaField.builder()
 				.visibility(Visibility.PUBLIC).type("int").name("test")
 				.build();
 		
 		assertEquals(Visibility.PUBLIC, field.getVisibility());
+	}
+	
+	@Test
+	public void testSetValue(){
+		field = JavaField.builder()
+				.type("int").name("test")
+				.value("42")
+				.build();
+		assertEquals("42", field.getValue());
 	}
 	
 	@Test
@@ -72,5 +119,57 @@ public class JavaFieldTest{
 	@Test
 	public void testToString(){
 		assertEquals("private int test", field.toString());
+	}
+	
+	@Test
+	public void testToStringWithSingleAnnotation(){
+		JavaAnnotation test = JavaAnnotation.builder().name("Test").build();
+		field = JavaField.builder()
+				.type("int").name("test")
+				.annotation(test)
+				.build();
+		String javaString = """
+				@Test
+				private int test""";
+		assertEquals(javaString, field.toString());
+	}
+	
+	@Test
+	public void testToStringWithAnnotations(){
+		JavaAnnotation test = JavaAnnotation.builder().name("Test").build();
+		JavaAnnotation derp = JavaAnnotation.builder().name("Derp").build();
+		field = JavaField.builder()
+				.type("int").name("test")
+				.annotation(test).annotation(derp)
+				.build();
+		String javaString = """
+				@Test
+				@Derp
+				private int test""";
+		assertEquals(javaString, field.toString());
+	}
+	
+	@Test
+	public void testToStringWithValue(){
+		field = JavaField.builder()
+				.type("int").name("test")
+				.value("42")
+				.build();
+		assertEquals("private int test = 42", field.toString());
+	}
+	
+	@Test
+	public void testToStringWithEverything(){
+		field = JavaField.builder()
+				.type("int").name("test")
+				.annotation(JavaAnnotation.builder().name("Test").build())
+				.annotation(JavaAnnotation.builder().name("Derp").build())
+				.value("42")
+				.build();
+		String javaString = """
+				@Test
+				@Derp
+				private int test = 42""";
+		assertEquals(javaString, field.toString());
 	}
 }

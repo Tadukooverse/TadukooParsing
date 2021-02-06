@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.tadukoo.parsing</groupId>
 	<artifactId>TadukooParsingParent</artifactId>
-	<version>0.2.2-Alpha</version>
+	<version>0.2.3-Alpha</version>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 	<description>Various libraries for parsing different formats</description>
@@ -32,6 +32,7 @@
 		</developerConnection>
 	</scm>
 	<modules>
+		<module>TadukooParsing</module>
 		<module>TadukooJSON</module>
 		<module>TadukooJava</module>
 		<module>TadukooFileFormat</module>
@@ -65,7 +66,7 @@
 		<directory.eclipse.annotationprocessing>.apt_generated</directory.eclipse.annotationprocessing>
 		
 		<!-- Tadukoo Util Versions -->
-		<tadukoo.util.version>0.2.2-Alpha</tadukoo.util.version>
+		<tadukoo.util.version>0.3.1-Alpha</tadukoo.util.version>
 		<tadukoo.util.lang.version>${tadukoo.util.version}</tadukoo.util.lang.version>
 		<tadukoo.util.functions.version>${tadukoo.util.version}</tadukoo.util.functions.version>
 		<tadukoo.util.util.version>${tadukoo.util.version}</tadukoo.util.util.version>
@@ -105,6 +106,12 @@
 				<groupId>${tadukoo.util.groupID}</groupId>
 				<artifactId>${tadukoo.util.util.artifactID}</artifactId>
 				<version>${tadukoo.util.util.version}</version>
+			</dependency>
+			<!-- TadukooParsing Dependency -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>TadukooParsing</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 			<!-- JUnit Dependencies -->
 			<dependency>

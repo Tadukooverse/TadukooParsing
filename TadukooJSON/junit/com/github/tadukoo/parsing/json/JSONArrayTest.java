@@ -23,6 +23,11 @@ public class JSONArrayTest{
 	}
 	
 	@Test
+	public void testSize(){
+		assertEquals(4, array.size());
+	}
+	
+	@Test
 	public void testConvertToJSONPopulated(){
 		assertEquals("[\"Derp\",5,true,null]", array.convertToJSON(new JSONConverter()));
 	}

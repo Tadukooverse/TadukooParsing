@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -7,14 +8,9 @@
 		<artifactId>TadukooParsingParent</artifactId>
 		<version>0.2.3-Alpha</version>
 	</parent>
-	<artifactId>TadukooFileFormat</artifactId>
+	<artifactId>TadukooParsing</artifactId>
 	<dependencies>
-		<!-- TadukooUtil -->
-		<dependency>
-			<groupId>${tadukoo.util.groupID}</groupId>
-			<artifactId>${tadukoo.util.util.artifactID}</artifactId>
-		</dependency>
-		<!-- JUnit Dependencies -->
+		<!-- JUnit Stuff -->
 		<dependency>
 			<groupId>${junit.jupiter.groupID}</groupId>
 			<artifactId>${junit.jupiter.artifactID}</artifactId>
@@ -28,6 +24,7 @@
 		<sourceDirectory>${directory.source}</sourceDirectory>
 		<testSourceDirectory>${directory.test}</testSourceDirectory>
 		<plugins>
+			<!-- Maven Required Stuff -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -39,6 +36,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
+			</plugin>
+			<!-- JaCoCo (for Testing Code Coverage) -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

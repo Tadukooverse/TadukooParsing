@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>TadukooParsingParent</artifactId>
 		<groupId>com.github.tadukoo.parsing</groupId>
-		<version>0.2.2-Alpha</version>
+		<version>0.2.3-Alpha</version>
 	</parent>
 	<artifactId>TadukooJSON</artifactId>
 	<dependencies>
@@ -14,6 +14,11 @@
 		<dependency>
 			<groupId>${tadukoo.util.groupID}</groupId>
 			<artifactId>${tadukoo.util.util.artifactID}</artifactId>
+		</dependency>
+		<!-- Tadukoo Parsing -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>TadukooParsing</artifactId>
 		</dependency>
 		<!-- JUnit Stuff -->
 		<dependency>
