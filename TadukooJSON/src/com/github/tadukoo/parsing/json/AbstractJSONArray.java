@@ -26,4 +26,10 @@ public abstract class AbstractJSONArray implements JSONArray{
 	public List<Object> getItems(){
 		return items;
 	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public int size(){
+		return items.size();
+	}
 }
