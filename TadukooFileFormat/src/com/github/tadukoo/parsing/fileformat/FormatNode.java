@@ -1,17 +1,19 @@
 package com.github.tadukoo.parsing.fileformat;
 
+import com.github.tadukoo.parsing.TadFormatRegexConverter;
 import com.github.tadukoo.util.ListUtil;
 import com.github.tadukoo.util.StringUtil;
+import com.github.tadukoo.util.logger.EasyLogger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Represents all the information about how a {@link Node} should be formatted for a {@link FileFormat}.
  * 
  * @author Logan Ferree (Tadukoo)
- * @version 0.1-Alpha-SNAPSHOT
+ * @version Alpha v.0.3
+ * @since Alpha v.0.1
  */
 public class FormatNode{
 	/** The text used to signify a null (e.g. as an allowed Node for parent/child/sibling) */
@@ -68,11 +70,12 @@ public class FormatNode{
 	 * </ul>
 	 * 
 	 * @author Logan Ferree (Tadukoo)
-	 * @version 0.1-Alpha-SNAPSHOT
+	 * @version Alpha v.0.3
+	 * @since Alpha v.0.1
 	 */
 	public static class FormatNodeBuilder{
-		/** The Logger to use for logging initialization messages */
-		private Logger logger = null;
+		/** The {@link EasyLogger} to use for logging initialization messages */
+		private EasyLogger logger = null;
 		/** Text to use in parsing into a FormatNode */
 		private String text = null;
 		/** The name of the Node for identification purposes */
@@ -100,12 +103,12 @@ public class FormatNode{
 		private FormatNodeBuilder(){ }
 		
 		/**
-		 * Set the {@link Logger} to use for logging initialization messages.
+		 * Set the {@link EasyLogger} to use for logging initialization messages.
 		 * 
-		 * @param logger The Logger to use for logging messages
+		 * @param logger The {@link EasyLogger} to use for logging messages
 		 * @return The FormatNodeBuilder, to continue in building
 		 */
-		public FormatNodeBuilder logger(Logger logger){
+		public FormatNodeBuilder logger(EasyLogger logger){
 			this.logger = logger;
 			return this;
 		}

@@ -10,6 +10,11 @@
 	</parent>
 	<artifactId>TadukooParsing</artifactId>
 	<dependencies>
+		<!-- Tadukoo Util -->
+		<dependency>
+			<groupId>${tadukoo.util.groupID}</groupId>
+			<artifactId>${tadukoo.util.util.artifactID}</artifactId>
+		</dependency>
 		<!-- JUnit Stuff -->
 		<dependency>
 			<groupId>${junit.jupiter.groupID}</groupId>

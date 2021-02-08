@@ -1,14 +1,14 @@
 package com.github.tadukoo.parsing.fileformat;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.github.tadukoo.util.logger.EasyLogger;
 
 /**
  * This class defines the Tad Format Node Header section that should be at the top 
  * of all files.
  * 
  * @author Logan Ferree (Tadukoo)
- * @version 0.1-Alpha-SNAPSHOT
+ * @version Alpha v.0.3
+ * @since Alpha v.0.1
  */
 public class TadFormatNodeHeader{
 	/** The name for the Head Tad Format Node */
@@ -27,10 +27,10 @@ public class TadFormatNodeHeader{
 	/**
 	 * Creates a {@link FormatNode} for the head Node of the Tad Format Header.
 	 * 
-	 * @param logger The Logger to use in logging any issues
+	 * @param logger The {@link EasyLogger} to use in logging any issues
 	 * @return The FormatNode for the head Tad Format Header Node
 	 */
-	private static FormatNode getHeadFormatNode(Logger logger){
+	private static FormatNode getHeadFormatNode(EasyLogger logger){
 		return FormatNode.builder()
 							.logger(logger)
 							.name(HEAD_NAME)
@@ -44,10 +44,10 @@ public class TadFormatNodeHeader{
 	/**
 	 * Creates a {@link FormatNode} for the Tad Format Version Node.
 	 * 
-	 * @param logger The Logger to use in logging any issues
+	 * @param logger The {@link EasyLogger} to use in logging any issues
 	 * @return The FormatNode for the Tad Format Version Node
 	 */
-	private static FormatNode getTadVersionNode(Logger logger){
+	private static FormatNode getTadVersionNode(EasyLogger logger){
 		return FormatNode.builder()
 							.logger(logger)
 							.name(TAD_VERSION_NUMBER)
@@ -62,10 +62,10 @@ public class TadFormatNodeHeader{
 	/**
 	 * Creates a {@link FormatNode} for the File Format Node.
 	 * 
-	 * @param logger The Logger to use in logging any issues
+	 * @param logger The {@link EasyLogger} to use in logging any issues
 	 * @return The FormatNode for the File Format Node
 	 */
-	private static FormatNode getFileFormatNode(Logger logger, FileFormat format){
+	private static FormatNode getFileFormatNode(EasyLogger logger, FileFormat format){
 		return FormatNode.builder()
 							.logger(logger)
 							.name(FILE_FORMAT)
@@ -80,10 +80,10 @@ public class TadFormatNodeHeader{
 	/**
 	 * Creates a {@link FormatNode} for the File Format Schema Node.
 	 * 
-	 * @param logger The Logger to use in logging any issues
+	 * @param logger The {@link EasyLogger} to use in logging any issues
 	 * @return The FormatNode for the File Format Schema Node
 	 */
-	private static FormatNode getSchemaNode(Logger logger){
+	private static FormatNode getSchemaNode(EasyLogger logger){
 		return FormatNode.builder()
 							.logger(logger)
 							.name(SCHEMA)
@@ -98,10 +98,10 @@ public class TadFormatNodeHeader{
 	/**
 	 * Creates a {@link FormatNode} for the File Format Schema Version Node.
 	 * 
-	 * @param logger The Logger to use in logging any issues
+	 * @param logger The {@link EasyLogger} to use in logging any issues
 	 * @return The FormatNode for the File Format Schema Version Node
 	 */
-	private static FormatNode getVersionStringNode(Logger logger, FileFormatSchema schema){
+	private static FormatNode getVersionStringNode(EasyLogger logger, FileFormatSchema schema){
 		return FormatNode.builder()
 							.logger(logger)
 							.name(VERSION_STRING)
@@ -116,10 +116,10 @@ public class TadFormatNodeHeader{
 	/**
 	 * Creates a {@link FormatNode} for the File Format Schema Version Number Node.
 	 * 
-	 * @param logger The Logger to use in logging any issues
+	 * @param logger The {@link EasyLogger} to use in logging any issues
 	 * @return The FormatNode for the File Format Schema Version Number Node
 	 */
-	private static FormatNode getVersionNumNode(Logger logger, FileFormatSchema schema){
+	private static FormatNode getVersionNumNode(EasyLogger logger, FileFormatSchema schema){
 		return FormatNode.builder()
 							.logger(logger)
 							.name(VERSION_NUMBER)
@@ -185,13 +185,13 @@ public class TadFormatNodeHeader{
 	/**
 	 * Verifies that the Tad Format Node is correct at the top of a file.
 	 * 
-	 * @param logger The Logger to use in logging any issues or successes
+	 * @param logger The {@link EasyLogger} to use in logging any issues or successes
 	 * @param tadFormatNode The Tad Format Node being checked
 	 * @param format The FileFormat to use in checking parameters
 	 * @param schema The FileFormatSchema to use in checking parameters
 	 * @return Whether the Tad Format Node was the correct format or not
 	 */
-	public static boolean verifyTadFormatNode(Logger logger, Node tadFormatNode, FileFormat format, FileFormatSchema schema){
+	public static boolean verifyTadFormatNode(EasyLogger logger, Node tadFormatNode, FileFormat format, FileFormatSchema schema){
 		// Check if the Head TadFormat Node matches the correct format
 		boolean goodHeadNode = FormatNodeVerification.verifySingleNode(
 				FormatNodeVerification.singleNodeVerificationParametersBuilder()
@@ -204,7 +204,7 @@ public class TadFormatNodeHeader{
 		
 		// Head TadFormat Node should have a next sibling that is the head Node for the actual contents of the file
 		if(tadFormatNode.getNextSibling() == null){
-			logger.log(Level.FINE, "* Head TadFormat Node has no next sibling! This file has no content!");
+			logger.logDebugFine("* Head TadFormat Node has no next sibling! This file has no content!");
 			goodHeadNode = false;
 		}
 		

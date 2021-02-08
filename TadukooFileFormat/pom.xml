@@ -9,10 +9,10 @@
 	</parent>
 	<artifactId>TadukooFileFormat</artifactId>
 	<dependencies>
-		<!-- TadukooUtil -->
+		<!-- Tadukoo Parsing -->
 		<dependency>
-			<groupId>${tadukoo.util.groupID}</groupId>
-			<artifactId>${tadukoo.util.util.artifactID}</artifactId>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>TadukooParsing</artifactId>
 		</dependency>
 		<!-- JUnit Dependencies -->
 		<dependency>
@@ -28,6 +28,7 @@
 		<sourceDirectory>${directory.source}</sourceDirectory>
 		<testSourceDirectory>${directory.test}</testSourceDirectory>
 		<plugins>
+			<!-- Maven Required Stuff -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -39,6 +40,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
+			</plugin>
+			<!-- JaCoCo (for Testing Code Coverage) -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

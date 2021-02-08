@@ -1,20 +1,20 @@
 package com.github.tadukoo.parsing.fileformat.ghdr;
 
 import com.github.tadukoo.parsing.fileformat.*;
+import com.github.tadukoo.util.logger.EasyLogger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class GHDRFileFormat extends FileFormat{
 	
-	public GHDRFileFormat(Logger logger){
+	public GHDRFileFormat(EasyLogger logger){
 		super(logger, "GHDR");
 	}
 	
 	@Override
-	protected Map<String, FileFormatSchema> createSchemas(Logger logger){
+	protected Map<String, FileFormatSchema> createSchemas(EasyLogger logger){
 		Map<String, FileFormatSchema> schemas = new HashMap<>();
 		// Version 1.0 File Format Schema
 		String version1 = "Version 1.0";

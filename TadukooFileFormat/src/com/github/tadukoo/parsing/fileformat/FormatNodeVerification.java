@@ -1,9 +1,9 @@
 package com.github.tadukoo.parsing.fileformat;
 
+import com.github.tadukoo.util.logger.EasyLogger;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,15 +11,16 @@ import java.util.regex.Pattern;
  * This class contains methods for verifying a file's format using {@link FormatNode}s.
  * 
  * @author Logan Ferree (Tadukoo)
- * @version 0.1-Alpha-SNAPSHOT
+ * @version Alpha v.0.3
+ * @since Alpha v.0.1
  */
 public class FormatNodeVerification{
 	
 	public static class SingleNodeVerifyParams{
 		
 		public static class SingleNodeVerifyParamsBuilder{
-			/** The Logger to use in logging messages */
-			private Logger logger = null;
+			/** The {@link EasyLogger} to use in logging messages */
+			private EasyLogger logger = null;
 			/** The path to the file - used in some formatting */
 			private String filepath = null;
 			/** The Node to be checked */
@@ -47,12 +48,12 @@ public class FormatNodeVerification{
 			private SingleNodeVerifyParamsBuilder(){ }
 			
 			/** 
-			 * Sets the Logger to use in logging messages
+			 * Sets the {@link EasyLogger} to use in logging messages
 			 * 
-			 * @param logger The Logger to use in logging messages
+			 * @param logger The {@link EasyLogger} to use in logging messages
 			 * @return This builder, to continue in building
 			 */
-			public SingleNodeVerifyParamsBuilder logger(Logger logger){
+			public SingleNodeVerifyParamsBuilder logger(EasyLogger logger){
 				this.logger = logger;
 				return this;
 			}
@@ -238,8 +239,8 @@ public class FormatNodeVerification{
 			}
 		}
 		
-		/** The Logger to use in logging messages */
-		private final Logger logger;
+		/** The {@link EasyLogger} to use in logging messages */
+		private final EasyLogger logger;
 		/** The path to the file - used in some formatting */
 		private final String filepath;
 		/** The Node to be checked */
@@ -264,7 +265,7 @@ public class FormatNodeVerification{
 		private final Node nextSibling;
 		
 		// Constructs a SingleNodeVerifyParams object
-		private SingleNodeVerifyParams(Logger logger, String filepath, Node node, FormatNode format,
+		private SingleNodeVerifyParams(EasyLogger logger, String filepath, Node node, FormatNode format,
 		                               boolean nullParent, boolean nullChild, boolean nullPrevSibling, boolean nullNextSibling,
 		                               Node parent, Node child, Node prevSibling, Node nextSibling){
 			this.logger = logger;
@@ -297,7 +298,7 @@ public class FormatNodeVerification{
 	 */
 	public static boolean verifySingleNode(SingleNodeVerifyParams params){
 		// Grab the params out of the pojo
-		Logger logger = params.logger;
+		EasyLogger logger = params.logger;
 		String filepath = params.filepath;
 		Node node = params.node;
 		FormatNode format = params.format;
@@ -310,7 +311,7 @@ public class FormatNodeVerification{
 		boolean titleMatch = verifyFormat(filepath, format.getTitleRegex(), node.getTitle());
 		// If title doesn't match, give a Logger message
 		if(!titleMatch){
-			logger.log(Level.FINE, "Title doesn't match!\n"
+			logger.logDebugFine("Title doesn't match!\n"
 					+ "* In checking Node " + node.toString() + " as a " + format.getName() + "\n"
 					+ "* Format Expected: " + format.getTitleRegex() + "\n"
 					+ "* Title Received: " + node.getTitle());
@@ -320,7 +321,7 @@ public class FormatNodeVerification{
 		boolean dataMatch = verifyFormat(filepath, format.getDataRegex(), node.getData());
 		// If data doesn't match, give a Logger message
 		if(!dataMatch){
-			logger.log(Level.FINE, "Data doesn't match!\n"
+			logger.logDebugFine("Data doesn't match!\n"
 					+ "* In checking Node " + node.toString() + " as a " + format.getName() + "\n"
 					+ "* Format Expected: " + format.getDataRegex() + "\n"
 					+ "* Data Received: " + node.getData());
@@ -330,7 +331,7 @@ public class FormatNodeVerification{
 		boolean levelMatch = format.getLevel() == node.getLevel();
 		// If level doesn't match, give a Logger message
 		if(!levelMatch){
-			logger.log(Level.FINE, "Incorrect Node level!\n"
+			logger.logDebugFine("Incorrect Node level!\n"
 					+ "* In checking Node " + node.toString() + " as a " + format.getName() + "\n"
 					+ "* Expected: " + format.getLevel() + ", but was: " + node.getLevel() + "!");
 		}
@@ -436,15 +437,15 @@ public class FormatNodeVerification{
 	/**
 	 * Checks that the given parent matches the parent on the given Node.
 	 * 
-	 * @param logger The Logger to use to log any issues
+	 * @param logger The {@link EasyLogger} to use to log any issues
 	 * @param node The Node to check the parent of
 	 * @param parent The expected parent
 	 * @return Whether the parent matches the expected or not
 	 */
-	public static boolean assertParent(Logger logger, Node node, Node parent){
+	public static boolean assertParent(EasyLogger logger, Node node, Node parent){
 		// Check that Node's parent is correct
 		if(!node.getParent().equals(parent)){
-			logger.log(Level.FINE, "* Node " + node.toString() + " should have Node " + 
+			logger.logDebugFine("* Node " + node.toString() + " should have Node " +
 						parent.toString() + " as its parent!");
 			return false;
 		}
@@ -455,14 +456,14 @@ public class FormatNodeVerification{
 	/**
 	 * Checks that the parent on the given Node is null.
 	 * 
-	 * @param logger The logger to use to log any issues
+	 * @param logger The {@link EasyLogger} to use to log any issues
 	 * @param node The Node to check the parent of
 	 * @return Whether the parent is null or not
 	 */
-	public static boolean assertNullParent(Logger logger, Node node){
+	public static boolean assertNullParent(EasyLogger logger, Node node){
 		// Check if Node has a parent (it shouldn't)
 		if(node.getParent() != null){
-			logger.log(Level.FINE, "* Node " + node.toString() + " shouldn't have a parent!");
+			logger.logDebugFine("* Node " + node.toString() + " shouldn't have a parent!");
 			return false;
 		}
 		
@@ -472,15 +473,15 @@ public class FormatNodeVerification{
 	/**
 	 * Checks that the given child matches the child on the given Node.
 	 * 
-	 * @param logger The Logger to use to log any issues
+	 * @param logger The {@link EasyLogger} to use to log any issues
 	 * @param node The Node to check the child of
 	 * @param child The expected child
 	 * @return Whether the child matches the expected or not
 	 */
-	public static boolean assertChild(Logger logger, Node node, Node child){
+	public static boolean assertChild(EasyLogger logger, Node node, Node child){
 		// Check that Node's previous sibling is correct
 		if(!node.getChild().equals(child)){
-			logger.log(Level.FINE, "* Node " + node.toString() + " should have Node " + 
+			logger.logDebugFine("* Node " + node.toString() + " should have Node " +
 						child.toString() + " as its child!");
 			return false;
 		}
@@ -491,14 +492,14 @@ public class FormatNodeVerification{
 	/**
 	 * Checks that the child on the given Node is null.
 	 * 
-	 * @param logger The logger to use to log any issues
+	 * @param logger The {@link EasyLogger} to use to log any issues
 	 * @param node The Node to check the child of
 	 * @return Whether the child is null or not
 	 */
-	public static boolean assertNullChild(Logger logger, Node node){
+	public static boolean assertNullChild(EasyLogger logger, Node node){
 		// Check if Node has a child (it shouldn't)
 		if(node.getChild() != null){
-			logger.log(Level.FINE, "* Node " + node.toString() + " shouldn't have a child!");
+			logger.logDebugFine("* Node " + node.toString() + " shouldn't have a child!");
 			return false;
 		}
 		
@@ -508,15 +509,15 @@ public class FormatNodeVerification{
 	/**
 	 * Checks that the given previous sibling matches the previous sibling on the given Node.
 	 * 
-	 * @param logger The Logger to use to log any issues
+	 * @param logger The {@link EasyLogger} to use to log any issues
 	 * @param node The Node to check the previous sibling of
 	 * @param prevSibling The expected previous sibling
 	 * @return Whether the previous sibling matches the expected or not
 	 */
-	public static boolean assertPrevSibling(Logger logger, Node node, Node prevSibling){
+	public static boolean assertPrevSibling(EasyLogger logger, Node node, Node prevSibling){
 		// Check that Node's previous sibling is correct
 		if(!node.getPrevSibling().equals(prevSibling)){
-			logger.log(Level.FINE, "* Node " + node.toString() + " should have Node " + 
+			logger.logDebugFine("* Node " + node.toString() + " should have Node " +
 						prevSibling.toString() + " as its previous sibling!");
 			return false;
 		}
@@ -527,14 +528,14 @@ public class FormatNodeVerification{
 	/**
 	 * Checks that the previous sibling on the given Node is null.
 	 * 
-	 * @param logger The logger to use to log any issues
+	 * @param logger The {@link EasyLogger} to use to log any issues
 	 * @param node The Node to check the previous sibling of
 	 * @return Whether the previous sibling is null or not
 	 */
-	public static boolean assertNullPrevSibling(Logger logger, Node node){
+	public static boolean assertNullPrevSibling(EasyLogger logger, Node node){
 		// Check if Node has a previous sibling (it shouldn't)
 		if(node.getPrevSibling() != null){
-			logger.log(Level.FINE, "* Node " + node.toString() + " shouldn't have a previous sibling!");
+			logger.logDebugFine("* Node " + node.toString() + " shouldn't have a previous sibling!");
 			return false;
 		}
 		
@@ -544,15 +545,15 @@ public class FormatNodeVerification{
 	/**
 	 * Checks that the given next sibling matches the next sibling on the given Node.
 	 * 
-	 * @param logger The Logger to use to log any issues
+	 * @param logger The {@link EasyLogger} to use to log any issues
 	 * @param node The Node to check the next sibling of
 	 * @param nextSibling The expected next sibling
 	 * @return Whether the next sibling matches the expected or not
 	 */
-	public static boolean assertNextSibling(Logger logger, Node node, Node nextSibling){
+	public static boolean assertNextSibling(EasyLogger logger, Node node, Node nextSibling){
 		// Check that Node's previous sibling is correct
 		if(!node.getNextSibling().equals(nextSibling)){
-			logger.log(Level.FINE, "* Node " + node.toString() + " should have Node " + 
+			logger.logDebugFine("* Node " + node.toString() + " should have Node " +
 						nextSibling.toString() + " as its next sibling!");
 			return false;
 		}
@@ -563,14 +564,14 @@ public class FormatNodeVerification{
 	/**
 	 * Checks that the next sibling on the given Node is null.
 	 * 
-	 * @param logger The logger to use to log any issues
+	 * @param logger The {@link EasyLogger} to use to log any issues
 	 * @param node The Node to check the next sibling of
 	 * @return Whether the next sibling is null or not
 	 */
-	public static boolean assertNullNextSibling(Logger logger, Node node){
+	public static boolean assertNullNextSibling(EasyLogger logger, Node node){
 		// Check if Node has a child (it shouldn't)
 		if(node.getNextSibling() != null){
-			logger.log(Level.FINE, "* Node " + node.toString() + " shouldn't have a next sibling!");
+			logger.logDebugFine("* Node " + node.toString() + " shouldn't have a next sibling!");
 			return false;
 		}
 		
