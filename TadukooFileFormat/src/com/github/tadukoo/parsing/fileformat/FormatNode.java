@@ -462,7 +462,7 @@ public class FormatNode{
 		 */
 		private void convertText(){
 			// Convert the text into Nodes and grab them
-			Node headNode = new Node(text);
+			Node headNode = Node.loadFromString(text);
 			Node titleFormatNode = headNode.getChild();
 			Node dataFormatNode = titleFormatNode.getNextSibling();
 			Node levelNode = dataFormatNode.getNextSibling();

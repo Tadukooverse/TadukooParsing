@@ -1,11 +1,12 @@
 package com.github.tadukoo.parsing.fileformat;
 
+import com.github.tadukoo.util.StringUtil;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,15 +36,17 @@ import java.util.List;
  * .getNextSibling() (as Job is a sibling of Name).
  * 
  * @author Logan Ferree (Tadukoo)
- * @version 0.1-Alpha-SNAPSHOT
+ * @version Alpha v.0.3
+ * @since Alpha v.0.1
  */
 public class Node{
+	
 	/** The name for what this piece of data is */
-	private String title;
+	private final String title;
 	/** The data for this Node */
-	private String data;
+	private final String data;
 	/** The level of Node this is (basically how many times you can call .getParent in a row from here) */
-	private int level;
+	private final int level;
 	/** The parent Node to this one */
 	private Node parent;
 	/** The child Node to this one */
@@ -75,27 +78,6 @@ public class Node{
 	}
 	
 	/**
-	 * Creates a Node (and any children and siblings down the line) from the given text. 
-	 * The text should be formatted so lines are separated using only the newline character (\n).
-	 * 
-	 * @param text The text to convert into Nodes
-	 */
-	public Node(String text){
-		List<String> lines = Arrays.asList(text.split("\n"));
-		loadFromList(lines);
-	}
-	
-	/**
-	 * Creates a Node (and any children and siblings down the line) from the given text as a 
-	 * List of lines.
-	 * 
-	 * @param lines The text (as a List of lines) to convert into Nodes
-	 */
-	public Node(ArrayList<String> lines){
-		loadFromList(lines);
-	}
-	
-	/**
 	 * Loads the given file and creates a Node (and any children and siblings down the line) 
 	 * from the contents of the file.
 	 * 
@@ -123,6 +105,17 @@ public class Node{
 	}
 	
 	/**
+	 * Loads Nodes (including children + siblings) from the given text.
+	 * The text should be formatted so lines are separated using only the newline character (\n).
+	 *
+	 * @param text The text to convert into Nodes
+	 */
+	public static Node loadFromString(String text){
+		List<String> lines = StringUtil.parseListFromStringWithSeparator(text, "\n", false);
+		return loadFromList(lines);
+	}
+	
+	/**
 	 * Loads Nodes (including children + siblings) from the given List of lines 
 	 * and returns the head Node.
 	 * 
@@ -134,82 +127,21 @@ public class Node{
 		List<Node> nodes = new ArrayList<>();
 		// Keep track of Node number to use in navigating the List
 		int nodeNum = 0;
-		// Grab the 1st line to use
-		String line = lines.get(0);
-		
-		/*
-		 * Create the head Node
-		 */
-		String title;
-		StringBuilder data;
-		// If line doesn't contain a colon, we got issues
-		if(!line.contains(":")){
-			throw new IllegalArgumentException("Line '" + line + "' doesn't have colon! "
-					+ "Not proper Tadukoo File Format!");
-		}
-		// Grab title as before the 1st colon
-		title = line.split(":")[0];
-		// i is for what line number we're on
-		int i = 1;
-		if(line.split(":").length > 1){
-			// If line contains at least 1 colon, set the data
-			data = new StringBuilder(line.split(":")[1]);
-			
-			// If line contains extra colons, add on to the data
-			if(line.split(":").length > 2){
-				for(int j = 2; j < line.split(":").length; j++){
-					data.append(":").append(line.split(":")[j]);
-				}
-			}
-			
-			// If the data starts with an opening parenthesis, it's multi-line data
-			if(data.toString().startsWith("(")){
-				// Remove the parenthesis from the start of the data
-				data = new StringBuilder(data.substring(1));
-				// Keep adding new lines to the data until we get the closing parenthesis
-				while(!data.toString().endsWith(")")){
-					// Add the next line to the data
-					data.append("\n").append(lines.get(i));
-					// Increment what line we're on
-					i++;
-				}
-				// Remove the closing parenthesis from the end of the data
-				data = new StringBuilder(data.substring(0, data.length() - 1));
-			}else if(data.toString().startsWith("\\(")){
-				// If data starts with an escaped parenthesis, remove the escape character
-				data = new StringBuilder(data.substring(1));
-			}
-		}else{
-			// If empty data section, set it as empty string
-			data = new StringBuilder();
-		}
-		
-		// Get the level of this Node - default 0
-		int level = 0;
-		while(title.startsWith("  ")){
-			// If the Node has spaces at the start, every 2 spaces = 1 level
-			level++;
-			title = title.substring(2);
-		}
-		
-		// Create the head Node and add it to the List of Nodes
-		nodes.add(new Node(title, data.toString(), level, null, null, null, null));
-		// Increment the current Node number
-		nodeNum++;
 		
 		/*
 		 * Create the child and sibling Nodes down the line
 		 */
-		for(; i < lines.size(); i++){
+		for(int i = 0; i < lines.size(); i++){
 			// Grab the next line to be read
-			line = lines.get(i);
+			String line = lines.get(i);
 			// If line doesn't contain a colon, we got issues
 			if(!line.contains(":")){
 				throw new IllegalArgumentException("Line '" + line + "' doesn't have colon! "
 						+ "Not proper Tadukoo File Format!");
 			}
 			// Grab the title from the line as before the 1st colon
-			title = line.split(":")[0];
+			String title = line.split(":")[0];
+			StringBuilder data;
 			if(line.split(":").length > 1){
 				// If the line contains at least 1 colon, set the data
 				data = new StringBuilder(line.split(":")[1]);
@@ -229,6 +161,11 @@ public class Node{
 					while(!data.toString().endsWith(")")){
 						// Increment what line we're on
 						i++;
+						// If we've reached the end of the lines, we got problems
+						if(i >= lines.size()){
+							throw new IllegalArgumentException(
+									"Reached end of lines without hitting closing parenthesis!");
+						}
 						// Add the next line to the data
 						data.append("\n").append(lines.get(i));
 					}
@@ -244,7 +181,7 @@ public class Node{
 			}
 			
 			// Get the level of this Node - default 0
-			level = 0;
+			int level = 0;
 			while(title.startsWith("  ")){
 				// If the Node has spaces at the start, every 2 spaces = 1 level
 				level++;
@@ -252,31 +189,42 @@ public class Node{
 			}
 			
 			// Create the new Node and add it to the list of Nodes
-			nodes.add(new Node(title, data.toString(), level, null, null, null, null));
+			Node curNode = new Node(title, data.toString(), level,
+					null, null, null, null);
+			nodes.add(curNode);
 			
-			/*
-			 * Determine where to attach the new Node
-			 */
-			// If Node has greater level than previous Node, it's a child of the previous Node
-			if(level > nodes.get(nodeNum - 1).getLevel()){
-				nodes.get(nodeNum - 1).setChild(nodes.get(nodeNum));
-				nodes.get(nodeNum).setParent(nodes.get(nodeNum - 1));
-			}else if(level == nodes.get(nodeNum - 1).getLevel()){
-				// If Node has the same level as previous Node, it's the next sibling of previous
-				nodes.get(nodeNum - 1).setNextSibling(nodes.get(nodeNum));
-				nodes.get(nodeNum).setPrevSibling(nodes.get(nodeNum - 1));
+			// If it's the head node, make sure we're at level 0
+			if(nodeNum == 0){
+				if(level != 0){
+					throw new IllegalArgumentException("Head Node should be level 0, but was level " + level + "!");
+				}
 			}else{
-				// If Node has lesser level than previous Node, find where to add it
-				for(int j = nodeNum - 2; j >= 0; j--){
-					// Iterate through previous Nodes
-					if(level > nodes.get(j).getLevel()){
-						// If current level is greater than a previous Node, add as child
-						nodes.get(j).setChild(nodes.get(nodeNum));
-						break;
-					}else if(level == nodes.get(j).getLevel()){
-						// If current level is equal to a previous Node, add as sibling
-						nodes.get(j).setNextSibling(nodes.get(nodeNum));
-						break;
+				// If it's not the head Node - determine where to attach the new Node
+				Node prevNode = nodes.get(nodeNum - 1);
+				// If Node has greater level than previous Node, it's a child of the previous Node
+				if(level > prevNode.getLevel()){
+					// If level is more than 1 down, we got issues
+					if(level - prevNode.getLevel() > 1){
+						throw new IllegalArgumentException("Skipped a level from " + prevNode.getLevel() +
+								" to " + level);
+					}
+					prevNode.setChild(curNode);
+					curNode.setParent(prevNode);
+				}else if(level == prevNode.getLevel()){
+					// If Node has the same level as previous Node, it's the next sibling of previous
+					prevNode.setNextSibling(curNode);
+					curNode.setPrevSibling(prevNode);
+				}else{
+					// If Node has lesser level than previous Node, find where to add it
+					for(int j = nodeNum - 2; j >= 0; j--){
+						prevNode = nodes.get(j);
+						// Iterate through previous Nodes
+						if(level == prevNode.getLevel()){
+							// If current level is equal to a previous Node, add as sibling
+							prevNode.setNextSibling(curNode);
+							curNode.setPrevSibling(prevNode);
+							break;
+						}
 					}
 				}
 			}
