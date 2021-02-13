@@ -41,6 +41,164 @@ import java.util.List;
  */
 public class Node{
 	
+	/**
+	 * Node Builder is used to build a {@link Node}. It has the following parameters:
+	 * <table>
+	 *     <caption>Node Parameters</caption>
+	 *     <tr>
+	 *         <th>Parameter</th>
+	 *         <th>Description</th>
+	 *         <th>Default or Required</th>
+	 *     </tr>
+	 *     <tr>
+	 *         <td>title</td>
+	 *         <td>The name for the piece of data</td>
+	 *         <td>Required</td>
+	 *     </tr>
+	 *     <tr>
+	 *         <td>data</td>
+	 *         <td>The actual data</td>
+	 *         <td>Defaults to null/empty</td>
+	 *     </tr>
+	 *     <tr>
+	 *         <td>level</td>
+	 *         <td>The level of the Node (basically how many times you can call {@link #getParent()} from here)</td>
+	 *         <td>Defaults to 0</td>
+	 *     </tr>
+	 *     <tr>
+	 *         <td>parent</td>
+	 *         <td>The parent {@link Node} to this one</td>
+	 *         <td>Defaults to null</td>
+	 *     </tr>
+	 *     <tr>
+	 *         <td>child</td>
+	 *         <td>The child {@link Node} to this one</td>
+	 *         <td>Defaults to null</td>
+	 *     </tr>
+	 *     <tr>
+	 *         <td>prevSibling</td>
+	 *         <td>The previous sibling {@link Node} to this one</td>
+	 *         <td>Defaults to null</td>
+	 *     </tr>
+	 *     <tr>
+	 *         <td>nextSibling</td>
+	 *         <td>The next sibling {@link Node} to this one</td>
+	 *         <td>Defaults to null</td>
+	 *     </tr>
+	 * </table>
+	 *
+	 * @author Logan Ferree (Tadukoo)
+	 * @version Alpha v.0.3
+	 */
+	public static class NodeBuilder{
+		/** The name for the piece of data */
+		private String title = null;
+		/** The actual data */
+		private String data = null;
+		/** The level of the Node (basically how many times you can call {@link #getParent()} from here) */
+		private int level = 0;
+		/** The parent {@link Node} to this one */
+		private Node parent = null;
+		/** The child {@link Node} to this one */
+		private Node child = null;
+		/** The previous sibling {@link Node} to this one */
+		private Node prevSibling = null;
+		/** The next sibling {@link Node} to this one */
+		private Node nextSibling = null;
+		
+		// Can't create NodeBuilder outside of Node
+		private NodeBuilder(){ }
+		
+		/**
+		 * @param title The name for the piece of data
+		 * @return this, to continue building
+		 */
+		public NodeBuilder title(String title){
+			this.title = title;
+			return this;
+		}
+		
+		/**
+		 * @param data The actual data
+		 * @return this, to continue building
+		 */
+		public NodeBuilder data(String data){
+			this.data = data;
+			return this;
+		}
+		
+		/**
+		 * @param level The level of the Node (basically how many times you can call {@link #getParent()} from here)
+		 * @return this, to continue building
+		 */
+		public NodeBuilder level(int level){
+			this.level = level;
+			return this;
+		}
+		
+		/**
+		 * @param parent The parent {@link Node} to this one
+		 * @return this, to continue building
+		 */
+		public NodeBuilder parent(Node parent){
+			this.parent = parent;
+			return this;
+		}
+		
+		/**
+		 * @param child The child {@link Node} to this one
+		 * @return this, to continue building
+		 */
+		public NodeBuilder child(Node child){
+			this.child = child;
+			return this;
+		}
+		
+		/**
+		 * @param prevSibling The previous sibling {@link Node} to this one
+		 * @return this, to continue building
+		 */
+		public NodeBuilder prevSibling(Node prevSibling){
+			this.prevSibling = prevSibling;
+			return this;
+		}
+		
+		/**
+		 * @param nextSibling The next sibling {@link Node} to this one
+		 * @return this, to continue building
+		 */
+		public NodeBuilder nextSibling(Node nextSibling){
+			this.nextSibling = nextSibling;
+			return this;
+		}
+		
+		/**
+		 * Checks for errors in the current parameters
+		 */
+		private void checkForErrors(){
+			if(StringUtil.isBlank(title)){
+				throw new IllegalArgumentException("title cannot be blank!");
+			}
+		}
+		
+		/**
+		 * Builds a new {@link Node} using the specified parameters
+		 *
+		 * @return A newly built {@link Node}
+		 */
+		public Node build(){
+			// Check for any problems
+			checkForErrors();
+			
+			// Change data to empty string if it's null
+			if(data == null){
+				data = "";
+			}
+			
+			return new Node(title, data, level, parent, child, prevSibling, nextSibling);
+		}
+	}
+	
 	/** The name for what this piece of data is */
 	private final String title;
 	/** The data for this Node */
@@ -67,7 +225,7 @@ public class Node{
 	 * @param prevSibling The previous sibling Node to this one
 	 * @param nextSibling The next sibling Node to this one
 	 */
-	public Node(String title, String data, int level, Node parent, Node child, Node prevSibling, Node nextSibling){
+	private Node(String title, String data, int level, Node parent, Node child, Node prevSibling, Node nextSibling){
 		this.title = title;
 		this.data = data;
 		this.level = level;
@@ -75,6 +233,13 @@ public class Node{
 		setChild(child);
 		setPrevSibling(prevSibling);
 		setNextSibling(nextSibling);
+	}
+	
+	/**
+	 * @return A new {@link NodeBuilder} to use to build a new {@link Node}
+	 */
+	public static NodeBuilder builder(){
+		return new NodeBuilder();
 	}
 	
 	/**
@@ -363,7 +528,7 @@ public class Node{
 		// Add any leading space (based on level)
 		return "  ".repeat(level) +
 				// Add the title and (optional) data
-				title + ":" + (data == null?"":data);
+				title + ":" + data;
 	}
 	
 	/**

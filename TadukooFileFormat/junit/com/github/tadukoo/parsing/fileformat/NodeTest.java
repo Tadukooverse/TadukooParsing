@@ -16,22 +16,76 @@ public class NodeTest{
 	
 	@BeforeEach
 	public void setup(){
-		simpleNode = new Node("some title", "some data", 1,
-				null, null, null, null);
+		simpleNode = Node.builder()
+				.title("some title").data("some data").level(1)
+				.build();
+	}
+	
+	@Test
+	public void testDefaultData(){
+		Node node = Node.builder().title("some title").build();
+		assertEquals("", node.getData());
+	}
+	
+	@Test
+	public void testDefaultLevel(){
+		Node node = Node.builder().title("some title").build();
+		assertEquals(0, node.getLevel());
+	}
+	
+	@Test
+	public void testDefaultParent(){
+		Node node = Node.builder().title("some title").build();
+		assertNull(node.getParent());
+	}
+	
+	@Test
+	public void testDefaultChild(){
+		Node node = Node.builder().title("some title").build();
+		assertNull(node.getChild());
+	}
+	
+	@Test
+	public void testDefaultPrevSibling(){
+		Node node = Node.builder().title("some title").build();
+		assertNull(node.getPrevSibling());
+	}
+	
+	@Test
+	public void testDefaultNextSibling(){
+		Node node = Node.builder().title("some title").build();
+		assertNull(node.getNextSibling());
+	}
+	
+	@Test
+	public void testBuilderMissingTitle(){
+		try{
+			Node.builder()
+					.build();
+			fail();
+		}catch(IllegalArgumentException e){
+			assertEquals("title cannot be blank!", e.getMessage());
+		}
 	}
 	
 	@Test
 	public void testBasicConstructor(){
-		Node parent = new Node("parent", "yep parent", 0,
-				null, null, null, null);
-		Node child = new Node("child", "yeah child", 2,
-				null, null, null, null);
-		Node prevSibling = new Node("young sibling", "they be young", 1,
-				null, null, null, null);
-		Node nextSibling = new Node("old sibling", "they be old", 1,
-				null, null, null, null);
-		Node node = new Node("some title", "some data", 1,
-				parent, child, prevSibling, nextSibling);
+		Node parent = Node.builder()
+				.title("parent").data("yep parent").level(0)
+				.build();
+		Node child = Node.builder()
+				.title("child").data("yeah child").level(2)
+				.build();
+		Node prevSibling = Node.builder()
+				.title("young sibling").data("they be young").level(1)
+				.build();
+		Node nextSibling = Node.builder()
+				.title("old sibling").data("they be old").level(1)
+				.build();
+		Node node = Node.builder()
+				.title("some title").data("some data").level(1)
+				.parent(parent).child(child).prevSibling(prevSibling).nextSibling(nextSibling)
+				.build();
 		assertEquals("some title", node.getTitle());
 		assertEquals("some data", node.getData());
 		assertEquals(1, node.getLevel());
@@ -43,11 +97,14 @@ public class NodeTest{
 	
 	@Test
 	public void testBasicConstructorBadParentSameLevel(){
-		Node parent = new Node("parent", "they be an adult", 0,
-				null, null, null, null);
+		Node parent = Node.builder()
+				.title("parent").data("they be an adult").level(0)
+				.build();
 		try{
-			new Node("some title", "some data", 0,
-					parent, null, null, null);
+			Node.builder()
+					.title("some title").data("some data").level(0)
+					.parent(parent)
+					.build();
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Parent's level must be less than child's level!", e.getMessage());
@@ -56,11 +113,14 @@ public class NodeTest{
 	
 	@Test
 	public void testBasicConstructorBadParentHigherLevel(){
-		Node parent = new Node("parent", "they be an adult", 1,
-				null, null, null, null);
+		Node parent = Node.builder()
+				.title("parent").data("they be an adult").level(1)
+				.build();
 		try{
-			new Node("some title", "some data", 0,
-					parent, null, null, null);
+			Node.builder()
+					.title("some title").data("some data").level(0)
+					.parent(parent)
+					.build();
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Parent's level must be less than child's level!", e.getMessage());
@@ -69,11 +129,14 @@ public class NodeTest{
 	
 	@Test
 	public void testBasicConstructorBadChildSameLevel(){
-		Node child = new Node("child", "they be a baby", 0,
-				null, null, null, null);
+		Node child = Node.builder()
+				.title("child").data("they be a baby").level(0)
+				.build();
 		try{
-			new Node("some title", "some data", 0,
-					null, child, null, null);
+			Node.builder()
+					.title("some title").data("some data").level(0)
+					.child(child)
+					.build();
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Child's level must be greater than parent's level!", e.getMessage());
@@ -82,11 +145,14 @@ public class NodeTest{
 	
 	@Test
 	public void testBasicConstructorBadChildLowerLevel(){
-		Node child = new Node("child", "they be a baby", 0,
-				null, null, null, null);
+		Node child = Node.builder()
+				.title("child").data("they be a baby").level(0)
+				.build();
 		try{
-			new Node("some title", "some data", 1,
-					null, child, null, null);
+			Node.builder()
+					.title("some title").data("some data").level(1)
+					.child(child)
+					.build();
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Child's level must be greater than parent's level!", e.getMessage());
@@ -95,11 +161,14 @@ public class NodeTest{
 	
 	@Test
 	public void testBasicConstructorBadPrevSiblingLowerLevel(){
-		Node prevSibling = new Node("sibling", "they be same age?", 0,
-				null, null, null, null);
+		Node prevSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(0)
+				.build();
 		try{
-			new Node("some title", "some data", 1,
-					null, null, prevSibling, null);
+			Node.builder()
+					.title("some title").data("some data").level(1)
+					.prevSibling(prevSibling)
+					.build();
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Sibling's level must be the same level!", e.getMessage());
@@ -108,11 +177,14 @@ public class NodeTest{
 	
 	@Test
 	public void testBasicConstructorBadPrevSiblingHigherLevel(){
-		Node prevSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node prevSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		try{
-			new Node("some title", "some data", 0,
-					null, null, prevSibling, null);
+			Node.builder()
+					.title("some title").data("some data").level(0)
+					.prevSibling(prevSibling)
+					.build();
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Sibling's level must be the same level!", e.getMessage());
@@ -121,11 +193,14 @@ public class NodeTest{
 	
 	@Test
 	public void testBasicConstructorBadNextSiblingLowerLevel(){
-		Node nextSibling = new Node("sibling", "they be same age?", 0,
-				null, null, null, null);
+		Node nextSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(0)
+				.build();
 		try{
-			new Node("some title", "some data", 1,
-					null, null, null, nextSibling);
+			Node.builder()
+					.title("some title").data("some data").level(1)
+					.nextSibling(nextSibling)
+					.build();
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Sibling's level must be the same level!", e.getMessage());
@@ -134,11 +209,14 @@ public class NodeTest{
 	
 	@Test
 	public void testBasicConstructorBadNextSiblingHigherLevel(){
-		Node nextSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node nextSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		try{
-			new Node("some title", "some data", 0,
-					null, null, null, nextSibling);
+			Node.builder()
+					.title("some title").data("some data").level(0)
+					.nextSibling(nextSibling)
+					.build();
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Sibling's level must be the same level!", e.getMessage());
@@ -384,8 +462,9 @@ public class NodeTest{
 	
 	@Test
 	public void testSetParent(){
-		Node parent = new Node("parent", "they be an adult", 0,
-				null, null, null, null);
+		Node parent = Node.builder()
+				.title("parent").data("they be an adult").level(0)
+				.build();
 		simpleNode.setParent(parent);
 		assertEquals(parent, simpleNode.getParent());
 	}
@@ -393,8 +472,9 @@ public class NodeTest{
 	@Test
 	public void testSetParentBadParentSameLevel(){
 		try{
-			simpleNode.setParent(new Node("parent", "they be an adult", 1,
-					null, null, null, null));
+			simpleNode.setParent(Node.builder()
+					.title("parent").data("they be an adult").level(1)
+					.build());
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Parent's level must be less than child's level!", e.getMessage());
@@ -404,8 +484,9 @@ public class NodeTest{
 	@Test
 	public void testSetParentBadParentHigherLevel(){
 		try{
-			simpleNode.setParent(new Node("parent", "they be an adult", 2,
-					null, null, null, null));
+			simpleNode.setParent(Node.builder()
+					.title("parent").data("they be an adult").level(2)
+					.build());
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Parent's level must be less than child's level!", e.getMessage());
@@ -414,8 +495,9 @@ public class NodeTest{
 	
 	@Test
 	public void testSetChild(){
-		Node child = new Node("child", "they be a baby", 2,
-				null, null, null, null);
+		Node child = Node.builder()
+				.title("child").data("they be a baby").level(2)
+				.build();
 		simpleNode.setChild(child);
 		assertEquals(child, simpleNode.getChild());
 	}
@@ -423,8 +505,9 @@ public class NodeTest{
 	@Test
 	public void testSetChildBadChildSameLevel(){
 		try{
-			simpleNode.setChild(new Node("child", "they be a baby", 1,
-					null, null, null, null));
+			simpleNode.setChild(Node.builder()
+					.title("child").data("they be a baby").level(1)
+					.build());
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Child's level must be greater than parent's level!", e.getMessage());
@@ -434,8 +517,9 @@ public class NodeTest{
 	@Test
 	public void testSetChildBadChildLowerLevel(){
 		try{
-			simpleNode.setChild(new Node("child", "they be a baby", 0,
-					null, null, null, null));
+			simpleNode.setChild(Node.builder()
+					.title("child").data("they be a baby").level(0)
+					.build());
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Child's level must be greater than parent's level!", e.getMessage());
@@ -444,8 +528,9 @@ public class NodeTest{
 	
 	@Test
 	public void testSetPrevSibling(){
-		Node prevSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node prevSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		simpleNode.setPrevSibling(prevSibling);
 		assertEquals(prevSibling, simpleNode.getPrevSibling());
 	}
@@ -453,8 +538,9 @@ public class NodeTest{
 	@Test
 	public void testSetPrevSiblingBadPrevSiblingLowerLevel(){
 		try{
-			simpleNode.setPrevSibling(new Node("sibling", "they be same age?", 0,
-					null, null, null, null));
+			simpleNode.setPrevSibling(Node.builder()
+					.title("sibling").data("they be same age?").level(0)
+					.build());
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Sibling's level must be the same level!", e.getMessage());
@@ -464,8 +550,9 @@ public class NodeTest{
 	@Test
 	public void testSetPrevSiblingBadPrevSiblingHigherLevel(){
 		try{
-			simpleNode.setPrevSibling(new Node("sibling", "they be same age?", 2,
-					null, null, null, null));
+			simpleNode.setPrevSibling(Node.builder()
+					.title("sibling").data("they be same age?").level(2)
+					.build());
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Sibling's level must be the same level!", e.getMessage());
@@ -474,8 +561,9 @@ public class NodeTest{
 	
 	@Test
 	public void testSetNextSibling(){
-		Node nextSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node nextSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		simpleNode.setNextSibling(nextSibling);
 		assertEquals(nextSibling, simpleNode.getNextSibling());
 	}
@@ -483,8 +571,9 @@ public class NodeTest{
 	@Test
 	public void testSetNextSiblingBadNextSiblingLowerLevel(){
 		try{
-			simpleNode.setNextSibling(new Node("sibling", "they be same age?", 0,
-					null, null, null, null));
+			simpleNode.setNextSibling(Node.builder()
+					.title("sibling").data("they be same age?").level(0)
+					.build());
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Sibling's level must be the same level!", e.getMessage());
@@ -494,8 +583,9 @@ public class NodeTest{
 	@Test
 	public void testSetNextSiblingBadNextSiblingHigherLevel(){
 		try{
-			simpleNode.setNextSibling(new Node("sibling", "they be same age?", 2,
-					null, null, null, null));
+			simpleNode.setNextSibling(Node.builder()
+					.title("sibling").data("they be same age?").level(2)
+					.build());
 			fail();
 		}catch(IllegalArgumentException e){
 			assertEquals("Sibling's level must be the same level!", e.getMessage());
@@ -509,8 +599,9 @@ public class NodeTest{
 	
 	@Test
 	public void testToStringNoDataLevel0(){
-		Node node = new Node("some title", null, 0,
-				null, null, null, null);
+		Node node = Node.builder()
+				.title("some title")
+				.build();
 		assertEquals("some title:", node.toString());
 	}
 	
@@ -521,8 +612,9 @@ public class NodeTest{
 	
 	@Test
 	public void testFullToStringWithChild(){
-		Node child = new Node("child", "a baby", 2,
-				null, null, null, null);
+		Node child = Node.builder()
+				.title("child").data("a baby").level(2)
+				.build();
 		simpleNode.setChild(child);
 		assertEquals("""
 				  some title:some data
@@ -532,8 +624,9 @@ public class NodeTest{
 	
 	@Test
 	public void testFullToStringWithNextSibling(){
-		Node nextSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node nextSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		simpleNode.setNextSibling(nextSibling);
 		assertEquals("""
 				  some title:some data
@@ -543,11 +636,13 @@ public class NodeTest{
 	
 	@Test
 	public void testFullToStringWithChildAndNextSibling(){
-		Node child = new Node("child", "a baby", 2,
-				null, null, null, null);
+		Node child = Node.builder()
+				.title("child").data("a baby").level(2)
+				.build();
 		simpleNode.setChild(child);
-		Node nextSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node nextSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		simpleNode.setNextSibling(nextSibling);
 		assertEquals("""
 				  some title:some data
@@ -558,16 +653,18 @@ public class NodeTest{
 	
 	@Test
 	public void testFullToStringWithParent(){
-		Node parent = new Node("parent", "they be an adult", 0,
-				null, null, null, null);
+		Node parent = Node.builder()
+				.title("parent").data("they be an adult")
+				.build();
 		simpleNode.setParent(parent);
 		assertEquals("  some title:some data", simpleNode.toString());
 	}
 	
 	@Test
 	public void testFullToStringWithPrevSibling(){
-		Node prevSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node prevSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		simpleNode.setPrevSibling(prevSibling);
 		assertEquals("  some title:some data", simpleNode.toString());
 	}
@@ -581,8 +678,9 @@ public class NodeTest{
 	
 	@Test
 	public void testGetAllTitlesWithChild(){
-		Node child = new Node("child", "a baby", 2,
-				null, null, null, null);
+		Node child = Node.builder()
+				.title("child").data("a baby").level(2)
+				.build();
 		simpleNode.setChild(child);
 		List<String> titles = simpleNode.getAllTitles();
 		assertEquals(2, titles.size());
@@ -592,8 +690,9 @@ public class NodeTest{
 	
 	@Test
 	public void testGetAllTitlesWithNextSibling(){
-		Node nextSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node nextSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		simpleNode.setNextSibling(nextSibling);
 		List<String> titles = simpleNode.getAllTitles();
 		assertEquals(2, titles.size());
@@ -603,11 +702,13 @@ public class NodeTest{
 	
 	@Test
 	public void testGetAllTitlesWithChildAndNextSibling(){
-		Node child = new Node("child", "a baby", 2,
-				null, null, null, null);
+		Node child = Node.builder()
+				.title("child").data("a baby").level(2)
+				.build();
 		simpleNode.setChild(child);
-		Node nextSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node nextSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		simpleNode.setNextSibling(nextSibling);
 		List<String> titles = simpleNode.getAllTitles();
 		assertEquals(3, titles.size());
@@ -618,8 +719,9 @@ public class NodeTest{
 	
 	@Test
 	public void testGetAllTitlesWithParent(){
-		Node parent = new Node("parent", "they be an adult", 0,
-				null, null, null, null);
+		Node parent = Node.builder()
+				.title("parent").data("they be an adult")
+				.build();
 		simpleNode.setParent(parent);
 		List<String> titles = simpleNode.getAllTitles();
 		assertEquals(1, titles.size());
@@ -628,8 +730,9 @@ public class NodeTest{
 	
 	@Test
 	public void testGetAllTitlesWithPrevSibling(){
-		Node prevSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node prevSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		simpleNode.setPrevSibling(prevSibling);
 		List<String> titles = simpleNode.getAllTitles();
 		assertEquals(1, titles.size());
@@ -645,8 +748,9 @@ public class NodeTest{
 	
 	@Test
 	public void testGetAllDatasWithChild(){
-		Node child = new Node("child", "a baby", 2,
-				null, null, null, null);
+		Node child = Node.builder()
+				.title("child").data("a baby").level(2)
+				.build();
 		simpleNode.setChild(child);
 		List<String> datas = simpleNode.getAllDatas();
 		assertEquals(2, datas.size());
@@ -656,8 +760,9 @@ public class NodeTest{
 	
 	@Test
 	public void testGetAllDatasWithNextSibling(){
-		Node nextSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node nextSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		simpleNode.setNextSibling(nextSibling);
 		List<String> datas = simpleNode.getAllDatas();
 		assertEquals(2, datas.size());
@@ -667,11 +772,13 @@ public class NodeTest{
 	
 	@Test
 	public void testGetAllDatasWithChildAndNextSibling(){
-		Node child = new Node("child", "a baby", 2,
-				null, null, null, null);
+		Node child = Node.builder()
+				.title("child").data("a baby").level(2)
+				.build();
 		simpleNode.setChild(child);
-		Node nextSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node nextSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		simpleNode.setNextSibling(nextSibling);
 		List<String> datas = simpleNode.getAllDatas();
 		assertEquals(3, datas.size());
@@ -682,8 +789,9 @@ public class NodeTest{
 	
 	@Test
 	public void testGetAllDatasWithParent(){
-		Node parent = new Node("parent", "they be an adult", 0,
-				null, null, null, null);
+		Node parent = Node.builder()
+				.title("parent").data("they be an adult")
+				.build();
 		simpleNode.setParent(parent);
 		List<String> datas = simpleNode.getAllDatas();
 		assertEquals(1, datas.size());
@@ -692,8 +800,9 @@ public class NodeTest{
 	
 	@Test
 	public void testGetAllDatasWithPrevSibling(){
-		Node prevSibling = new Node("sibling", "they be same age?", 1,
-				null, null, null, null);
+		Node prevSibling = Node.builder()
+				.title("sibling").data("they be same age?").level(1)
+				.build();
 		simpleNode.setPrevSibling(prevSibling);
 		List<String> datas = simpleNode.getAllDatas();
 		assertEquals(1, datas.size());

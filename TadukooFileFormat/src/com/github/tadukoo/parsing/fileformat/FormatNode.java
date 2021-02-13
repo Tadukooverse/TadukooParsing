@@ -674,31 +674,50 @@ public class FormatNode{
 		 */
 		
 		// The head Node = "Format" + name
-		Node headNode = new Node("Format", name, 0, null, null, null, null);
+		Node headNode = Node.builder()
+				.title("Format").data(name)
+				.build();
 		// The title format Node = "Regex"/"Format" + titleRegex
-		Node titleFormatNode = new Node("Regex", titleRegex, 1, headNode, null, null, null);
+		Node titleFormatNode = Node.builder()
+				.title("Regex").data(titleRegex).level(1)
+				.parent(headNode)
+				.build();
 		headNode.setChild(titleFormatNode);
 		// The data format Node = "Regex"/"Format" + dataRegex
-		Node dataFormatNode = new Node("Regex", dataRegex, 1, null, null, titleFormatNode, null);
+		Node dataFormatNode = Node.builder()
+				.title("Regex").data(dataRegex).level(1)
+				.prevSibling(titleFormatNode)
+				.build();
 		titleFormatNode.setNextSibling(dataFormatNode);
 		// The level Node = "Level" + level
-		Node levelNode = new Node("Level", String.valueOf(level), 1, null, null, dataFormatNode, null);
+		Node levelNode = Node.builder()
+				.title("Level").data(String.valueOf(level)).level(1)
+				.prevSibling(dataFormatNode)
+				.build();
 		dataFormatNode.setNextSibling(levelNode);
 		// The parents Node = "Parents" + parentNames
-		Node parentsNode = new Node("Parents", StringUtil.buildCommaSeparatedString(parentNames), 1, null, null,
-				levelNode, null);
+		Node parentsNode = Node.builder()
+				.title("Parents").data(StringUtil.buildCommaSeparatedString(parentNames)).level(1)
+				.prevSibling(levelNode)
+				.build();
 		levelNode.setNextSibling(parentsNode);
 		// The children Node = "Children" + childNames
-		Node childrenNode = new Node("Children", StringUtil.buildCommaSeparatedString(childNames), 1, null, null,
-				parentsNode, null);
+		Node childrenNode = Node.builder()
+				.title("Children").data(StringUtil.buildCommaSeparatedString(childNames)).level(1)
+				.prevSibling(parentsNode)
+				.build();
 		parentsNode.setNextSibling(childrenNode);
 		// The previous sibling Node = "PrevSiblings" + prevSiblingNames
-		Node prevSiblingNode = new Node("PrevSiblings", StringUtil.buildCommaSeparatedString(prevSiblingNames), 1,
-				null, null, childrenNode, null);
+		Node prevSiblingNode = Node.builder()
+				.title("PrevSiblings").data(StringUtil.buildCommaSeparatedString(prevSiblingNames)).level(1)
+				.prevSibling(childrenNode)
+				.build();
 		childrenNode.setNextSibling(prevSiblingNode);
 		// The next sibling Node = "NextSiblings" + nextSiblingNames
-		Node nextSiblingNode = new Node("NextSiblings", StringUtil.buildCommaSeparatedString(nextSiblingNames), 1,
-				null, null, prevSiblingNode, null);
+		Node nextSiblingNode = Node.builder()
+				.title("NextSiblings").data(StringUtil.buildCommaSeparatedString(nextSiblingNames)).level(1)
+				.prevSibling(prevSiblingNode)
+				.build();
 		prevSiblingNode.setNextSibling(nextSiblingNode);
 		
 		// Convert these Nodes into a string to be returned

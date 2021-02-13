@@ -139,28 +139,43 @@ public class TadFormatNodeHeader{
 	 */
 	public static Node createHeader(FileFormat format, FileFormatSchema schema){
 		// Create the head Tad Format Node
-		Node headNode = new Node(HEAD_NAME, "", 0, null, null, null, null);
+		Node headNode = Node.builder()
+				.title(HEAD_NAME)
+				.build();
 		
 		// Create the Tad Format Version Node
-		Node tadVersionNode = new Node(TAD_VERSION_NUMBER, String.valueOf(FileFormat.TAD_FORMAT_VERSION_NUM), 1, 
-				headNode, null, null, null);
+		Node tadVersionNode = Node.builder()
+				.title(TAD_VERSION_NUMBER).data(String.valueOf(FileFormat.TAD_FORMAT_VERSION_NUM)).level(1)
+				.parent(headNode)
+				.build();
 		headNode.setChild(tadVersionNode);
 		
 		// Create the File Format Node
-		Node fileFormatNode = new Node(FILE_FORMAT, format.getName(), 1, null, null, tadVersionNode, null);
+		Node fileFormatNode = Node.builder()
+				.title(FILE_FORMAT).data(format.getName()).level(1)
+				.prevSibling(tadVersionNode)
+				.build();
 		tadVersionNode.setNextSibling(fileFormatNode);
 		
 		// Create the File Format Schema Node
-		Node schemaNode = new Node(SCHEMA, "", 2, fileFormatNode, null, null, null);
+		Node schemaNode = Node.builder()
+				.title(SCHEMA).level(2)
+				.parent(fileFormatNode)
+				.build();
 		fileFormatNode.setChild(schemaNode);
 		
 		// Create the File Format Schema Version Node
-		Node versionStringNode = new Node(VERSION_STRING, schema.getVersionString(), 3, schemaNode, null, null, null);
+		Node versionStringNode = Node.builder()
+				.title(VERSION_STRING).data(schema.getVersionString()).level(3)
+				.parent(schemaNode)
+				.build();
 		schemaNode.setChild(versionStringNode);
 		
 		// Create the File Format Schema Version Number Node
-		Node versionNumNode = new Node(VERSION_NUMBER, String.valueOf(schema.getVersionNum()), 3, 
-				null, null, versionStringNode, null);
+		Node versionNumNode = Node.builder()
+				.title(VERSION_NUMBER).data(String.valueOf(schema.getVersionNum())).level(3)
+				.prevSibling(versionStringNode)
+				.build();
 		versionStringNode.setNextSibling(versionNumNode);
 		
 		// Return the head Node of this header
