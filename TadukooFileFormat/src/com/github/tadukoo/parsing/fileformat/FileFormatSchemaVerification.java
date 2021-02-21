@@ -153,7 +153,7 @@ public class FileFormatSchemaVerification{
 				
 				// Check if this Node matches the current FormatNode
 				goodNode = FormatNodeVerification.verifySingleNode(
-						FormatNodeVerification.singleNodeVerificationParametersBuilder()
+						NodeVerificationCriteria.builder()
 												.logger(logger)
 												.filepath(filepath)
 												.node(node)

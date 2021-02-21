@@ -209,7 +209,7 @@ public class TadFormatNodeHeader{
 	public static boolean verifyTadFormatNode(EasyLogger logger, Node tadFormatNode, FileFormat format, FileFormatSchema schema){
 		// Check if the Head TadFormat Node matches the correct format
 		boolean goodHeadNode = FormatNodeVerification.verifySingleNode(
-				FormatNodeVerification.singleNodeVerificationParametersBuilder()
+				NodeVerificationCriteria.builder()
 										.logger(logger)
 										.node(tadFormatNode)
 										.format(getHeadFormatNode(logger))
@@ -228,7 +228,7 @@ public class TadFormatNodeHeader{
 		
 		// Check if the Tad Format Version Number Node matches the correct format
 		boolean goodTadFormatNumNode = FormatNodeVerification.verifySingleNode(
-				FormatNodeVerification.singleNodeVerificationParametersBuilder()
+				NodeVerificationCriteria.builder()
 										.logger(logger)
 										.node(tadFormatNumNode)
 										.format(getTadVersionNode(logger))
@@ -242,7 +242,7 @@ public class TadFormatNodeHeader{
 		
 		// Check if the File Format Node matches the correct format
 		boolean goodFileFormatNode = FormatNodeVerification.verifySingleNode(
-				FormatNodeVerification.singleNodeVerificationParametersBuilder()
+				NodeVerificationCriteria.builder()
 										.logger(logger)
 										.node(fileFormatNode)
 										.format(getFileFormatNode(logger, format))
@@ -256,7 +256,7 @@ public class TadFormatNodeHeader{
 		
 		// Check if the Schema Node matches the correct format
 		boolean goodSchemaNode = FormatNodeVerification.verifySingleNode(
-				FormatNodeVerification.singleNodeVerificationParametersBuilder()
+				NodeVerificationCriteria.builder()
 										.logger(logger)
 										.node(schemaNode)
 										.format(getSchemaNode(logger))
@@ -270,7 +270,7 @@ public class TadFormatNodeHeader{
 		
 		// Check if the Version String Node matches the correct format
 		boolean goodVerStrNode = FormatNodeVerification.verifySingleNode(
-				FormatNodeVerification.singleNodeVerificationParametersBuilder()
+				NodeVerificationCriteria.builder()
 										.logger(logger)
 										.node(versionStringNode)
 										.format(getVersionStringNode(logger, schema))
@@ -284,7 +284,7 @@ public class TadFormatNodeHeader{
 		
 		// Check if the Version Number Node matches the correct format
 		boolean goodVerNumNode = FormatNodeVerification.verifySingleNode(
-				FormatNodeVerification.singleNodeVerificationParametersBuilder()
+				NodeVerificationCriteria.builder()
 										.logger(logger)
 										.node(versionNumNode)
 										.format(getVersionNumNode(logger, schema))
