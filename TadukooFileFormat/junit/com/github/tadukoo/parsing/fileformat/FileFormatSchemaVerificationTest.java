@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileFormatSchemaVerificationTest{
-	private static final String subfolder = "target/FileFormatSchemaVerificationTest/";
+	private static final String subfolder = "target/logs/FileFormatSchemaVerificationTest/";
 	private String filepath;
 	private FileFormat fileFormat;
 	

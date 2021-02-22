@@ -14,6 +14,9 @@ import java.util.regex.Pattern;
  */
 public class FormatNodeVerification{
 	
+	// Not allowed to instantiate Format Node Verification
+	private FormatNodeVerification(){ }
+	
 	/**
 	 * Verifies if the format of the Node given in the parameters is of the correct format.
 	 * 
@@ -117,9 +120,9 @@ public class FormatNodeVerification{
 	 * @return If the String matches the formatting or not
 	 */
 	private static boolean verifyFormat(String filepath, String regex, String actual){
-		String filename = null;
-		String fileTitle = null;
-		String fileExtension = null;
+		String filename = "";
+		String fileTitle = "";
+		String fileExtension = "";
 		
 		// If filepath isn't null, split it into the useful pieces
 		if(filepath != null){
@@ -132,7 +135,7 @@ public class FormatNodeVerification{
 			// FileTitle is used in matching against <filetitle> in the FileFormatSchema
 			fileTitle = filename.substring(0, periodIndex);
 			// FileExtension is used in matching against <fileExtension> in the FileFormatSchema
-			fileExtension = filename.substring(periodIndex);
+			fileExtension = filename.substring(periodIndex+1);
 		}
 		
 		// Replace <filename> (used in TFormatting) with the actual filename
@@ -168,7 +171,7 @@ public class FormatNodeVerification{
 	 */
 	public static boolean assertParent(EasyLogger logger, Node node, Node parent){
 		// Check that Node's parent is correct
-		if(!node.getParent().equals(parent)){
+		if(!parent.equals(node.getParent())){
 			logger.logDebugFine("* Node " + node.toString() + " should have Node " +
 						parent.toString() + " as its parent!");
 			return false;
@@ -204,7 +207,7 @@ public class FormatNodeVerification{
 	 */
 	public static boolean assertChild(EasyLogger logger, Node node, Node child){
 		// Check that Node's previous sibling is correct
-		if(!node.getChild().equals(child)){
+		if(!child.equals(node.getChild())){
 			logger.logDebugFine("* Node " + node.toString() + " should have Node " +
 						child.toString() + " as its child!");
 			return false;
@@ -240,7 +243,7 @@ public class FormatNodeVerification{
 	 */
 	public static boolean assertPrevSibling(EasyLogger logger, Node node, Node prevSibling){
 		// Check that Node's previous sibling is correct
-		if(!node.getPrevSibling().equals(prevSibling)){
+		if(!prevSibling.equals(node.getPrevSibling())){
 			logger.logDebugFine("* Node " + node.toString() + " should have Node " +
 						prevSibling.toString() + " as its previous sibling!");
 			return false;
@@ -276,7 +279,7 @@ public class FormatNodeVerification{
 	 */
 	public static boolean assertNextSibling(EasyLogger logger, Node node, Node nextSibling){
 		// Check that Node's previous sibling is correct
-		if(!node.getNextSibling().equals(nextSibling)){
+		if(!nextSibling.equals(node.getNextSibling())){
 			logger.logDebugFine("* Node " + node.toString() + " should have Node " +
 						nextSibling.toString() + " as its next sibling!");
 			return false;

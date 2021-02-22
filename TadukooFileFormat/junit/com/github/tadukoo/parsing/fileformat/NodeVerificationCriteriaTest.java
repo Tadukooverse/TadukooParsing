@@ -22,7 +22,7 @@ public class NodeVerificationCriteriaTest{
 	
 	@BeforeEach
 	public void setup() throws IOException{
-		logger = new EasyLogger(LoggerUtil.createFileLogger("target/NodeVerificationCriteriaTest.log",
+		logger = new EasyLogger(LoggerUtil.createFileLogger("target/logs/NodeVerificationCriteriaTest.log",
 				Level.FINEST));
 		node = Node.builder()
 				.title("some title").data("some data").level(0)

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class FormatNodeTest{
-	private final String subfolder = "target/FormatNodeTest/";
+	private final String subfolder = "target/logs/FormatNodeTest/";
 	private FormatNode node;
 	
 	@BeforeEach
