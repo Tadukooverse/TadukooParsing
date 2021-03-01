@@ -16,12 +16,6 @@ import java.util.Map;
  * @since Alpha v.0.1
  */
 public abstract class FileFormat{
-	/** 
-	 * This will be updated if the general Tad Format changes, and there will be a way in the future 
-	 * to update between Tad Format Versions. Note: This does not directly correspond to the current 
-	 * project's version, only to actual formatting changes.
-	 */
-	public static final int TAD_FORMAT_VERSION_NUM = 1;
 	/** The name of this file format */
 	private final String name;
 	/** A mapping of version strings to {@link FileFormatSchema}s */

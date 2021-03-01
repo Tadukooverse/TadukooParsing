@@ -11,6 +11,12 @@ import com.github.tadukoo.util.logger.EasyLogger;
  * @since Alpha v.0.1
  */
 public class TadFormatNodeHeader{
+	/**
+	 * This will be updated if the general Tad Format changes, and there will be a way in the future
+	 * to update between Tad Format Versions. Note: This does not directly correspond to the current
+	 * project's version, only to actual formatting changes.
+	 */
+	public static final int TAD_FORMAT_VERSION_NUM = 1;
 	/** The name for the Head Tad Format Node */
 	public static final String HEAD_NAME = "TadFormat";
 	/** The name for the Tad Format Version Number Node */
@@ -52,7 +58,7 @@ public class TadFormatNodeHeader{
 							.logger(logger)
 							.name(TAD_VERSION_NUMBER)
 							.titleRegex(TAD_VERSION_NUMBER)
-							.dataRegex(String.valueOf(FileFormat.TAD_FORMAT_VERSION_NUM))
+							.dataRegex(String.valueOf(TAD_FORMAT_VERSION_NUM))
 							.level(1)
 							.parentName(HEAD_NAME)
 							.nextSiblingName(FILE_FORMAT)
@@ -145,7 +151,7 @@ public class TadFormatNodeHeader{
 		
 		// Create the Tad Format Version Node
 		Node tadVersionNode = Node.builder()
-				.title(TAD_VERSION_NUMBER).data(String.valueOf(FileFormat.TAD_FORMAT_VERSION_NUM)).level(1)
+				.title(TAD_VERSION_NUMBER).data(String.valueOf(TAD_FORMAT_VERSION_NUM)).level(1)
 				.parent(headNode)
 				.build();
 		headNode.setChild(tadVersionNode);
