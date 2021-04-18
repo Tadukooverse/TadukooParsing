@@ -27,6 +27,7 @@ public abstract class FileFormat{
 	 * to creating the schemas. 
 	 * 
 	 * @param logger The {@link EasyLogger} to use in logging messages
+	 * @param name The name of the File Format
 	 */
 	public FileFormat(EasyLogger logger, String name){
 		this.name = name;

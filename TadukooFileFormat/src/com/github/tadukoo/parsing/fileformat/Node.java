@@ -274,6 +274,7 @@ public class Node{
 	 * The text should be formatted so lines are separated using only the newline character (\n).
 	 *
 	 * @param text The text to convert into Nodes
+	 * @return The head Node loaded from the given text
 	 */
 	public static Node loadFromString(String text){
 		List<String> lines = StringUtil.parseListFromStringWithSeparator(text, "\n", false);

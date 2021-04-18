@@ -188,7 +188,7 @@ public class FileFormatSchemaVerification{
 		if(goodNode && node != null){
 			logger.logDebugFiner("This was a good node!\n"
 					+ "* Format: " + format.getNodeRegex() + "\n"
-					+ "* Actual: " + node.toString());
+					+ "* Actual: " + node);
 		}
 		
 		return goodNode;
