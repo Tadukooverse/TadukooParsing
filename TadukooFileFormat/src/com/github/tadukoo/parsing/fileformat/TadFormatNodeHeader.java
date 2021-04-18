@@ -30,6 +30,9 @@ public class TadFormatNodeHeader{
 	/** The name for the File Format Schema Version Number Node */
 	private static final String VERSION_NUMBER = "Version Num";
 	
+	// Not allowed to create a TadFormatNodeHeader
+	private TadFormatNodeHeader(){ }
+	
 	/**
 	 * Creates a {@link FormatNode} for the head Node of the Tad Format Header.
 	 * 
