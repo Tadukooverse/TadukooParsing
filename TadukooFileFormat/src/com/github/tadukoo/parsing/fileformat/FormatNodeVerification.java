@@ -39,7 +39,7 @@ public class FormatNodeVerification{
 		// If title doesn't match, give a Logger message
 		if(!titleMatch){
 			logger.logDebugFine("Title doesn't match!\n"
-					+ "* In checking Node " + node.toString() + " as a " + format.getName() + "\n"
+					+ "* In checking Node " + node + " as a " + format.getName() + "\n"
 					+ "* Format Expected: " + format.getTitleRegex() + "\n"
 					+ "* Title Received: " + node.getTitle());
 		}
@@ -49,7 +49,7 @@ public class FormatNodeVerification{
 		// If data doesn't match, give a Logger message
 		if(!dataMatch){
 			logger.logDebugFine("Data doesn't match!\n"
-					+ "* In checking Node " + node.toString() + " as a " + format.getName() + "\n"
+					+ "* In checking Node " + node + " as a " + format.getName() + "\n"
 					+ "* Format Expected: " + format.getDataRegex() + "\n"
 					+ "* Data Received: " + node.getData());
 		}
@@ -59,7 +59,7 @@ public class FormatNodeVerification{
 		// If level doesn't match, give a Logger message
 		if(!levelMatch){
 			logger.logDebugFine("Incorrect Node level!\n"
-					+ "* In checking Node " + node.toString() + " as a " + format.getName() + "\n"
+					+ "* In checking Node " + node + " as a " + format.getName() + "\n"
 					+ "* Expected: " + format.getLevel() + ", but was: " + node.getLevel() + "!");
 		}
 		
@@ -172,8 +172,8 @@ public class FormatNodeVerification{
 	public static boolean assertParent(EasyLogger logger, Node node, Node parent){
 		// Check that Node's parent is correct
 		if(!parent.equals(node.getParent())){
-			logger.logDebugFine("* Node " + node.toString() + " should have Node " +
-						parent.toString() + " as its parent!");
+			logger.logDebugFine("* Node " + node + " should have Node " +
+					parent + " as its parent!");
 			return false;
 		}
 		
@@ -190,7 +190,7 @@ public class FormatNodeVerification{
 	public static boolean assertNullParent(EasyLogger logger, Node node){
 		// Check if Node has a parent (it shouldn't)
 		if(node.getParent() != null){
-			logger.logDebugFine("* Node " + node.toString() + " shouldn't have a parent!");
+			logger.logDebugFine("* Node " + node + " shouldn't have a parent!");
 			return false;
 		}
 		
@@ -208,8 +208,8 @@ public class FormatNodeVerification{
 	public static boolean assertChild(EasyLogger logger, Node node, Node child){
 		// Check that Node's previous sibling is correct
 		if(!child.equals(node.getChild())){
-			logger.logDebugFine("* Node " + node.toString() + " should have Node " +
-						child.toString() + " as its child!");
+			logger.logDebugFine("* Node " + node + " should have Node " +
+					child + " as its child!");
 			return false;
 		}
 		
@@ -226,7 +226,7 @@ public class FormatNodeVerification{
 	public static boolean assertNullChild(EasyLogger logger, Node node){
 		// Check if Node has a child (it shouldn't)
 		if(node.getChild() != null){
-			logger.logDebugFine("* Node " + node.toString() + " shouldn't have a child!");
+			logger.logDebugFine("* Node " + node + " shouldn't have a child!");
 			return false;
 		}
 		
@@ -244,8 +244,8 @@ public class FormatNodeVerification{
 	public static boolean assertPrevSibling(EasyLogger logger, Node node, Node prevSibling){
 		// Check that Node's previous sibling is correct
 		if(!prevSibling.equals(node.getPrevSibling())){
-			logger.logDebugFine("* Node " + node.toString() + " should have Node " +
-						prevSibling.toString() + " as its previous sibling!");
+			logger.logDebugFine("* Node " + node + " should have Node " +
+					prevSibling + " as its previous sibling!");
 			return false;
 		}
 		
@@ -262,7 +262,7 @@ public class FormatNodeVerification{
 	public static boolean assertNullPrevSibling(EasyLogger logger, Node node){
 		// Check if Node has a previous sibling (it shouldn't)
 		if(node.getPrevSibling() != null){
-			logger.logDebugFine("* Node " + node.toString() + " shouldn't have a previous sibling!");
+			logger.logDebugFine("* Node " + node + " shouldn't have a previous sibling!");
 			return false;
 		}
 		
@@ -280,8 +280,8 @@ public class FormatNodeVerification{
 	public static boolean assertNextSibling(EasyLogger logger, Node node, Node nextSibling){
 		// Check that Node's previous sibling is correct
 		if(!nextSibling.equals(node.getNextSibling())){
-			logger.logDebugFine("* Node " + node.toString() + " should have Node " +
-						nextSibling.toString() + " as its next sibling!");
+			logger.logDebugFine("* Node " + node + " should have Node " +
+					nextSibling + " as its next sibling!");
 			return false;
 		}
 		
@@ -298,7 +298,7 @@ public class FormatNodeVerification{
 	public static boolean assertNullNextSibling(EasyLogger logger, Node node){
 		// Check if Node has a child (it shouldn't)
 		if(node.getNextSibling() != null){
-			logger.logDebugFine("* Node " + node.toString() + " shouldn't have a next sibling!");
+			logger.logDebugFine("* Node " + node + " shouldn't have a next sibling!");
 			return false;
 		}
 		

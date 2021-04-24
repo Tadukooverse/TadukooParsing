@@ -26,8 +26,7 @@ public class JSONConverterTest{
 				"\n}";
 		
 		JSONObject obj = converter.parseJSON(JSON);
-		if(obj instanceof JSONClass){
-			JSONClass clazz = (JSONClass) obj;
+		if(obj instanceof JSONClass clazz){
 			// Verify keys
 			Set<String> keys = clazz.getKeys();
 			assertEquals(4, keys.size());
@@ -60,8 +59,7 @@ public class JSONConverterTest{
 				"\n}";
 		
 		JSONObject obj = converter.parseJSON(JSON);
-		if(obj instanceof JSONClass){
-			JSONClass clazz = (JSONClass) obj;
+		if(obj instanceof JSONClass clazz){
 			// Verify keys
 			Set<String> keys = clazz.getKeys();
 			assertEquals(3, keys.size());
@@ -77,8 +75,7 @@ public class JSONConverterTest{
 			
 			// Verify the sub-class item
 			Object subObj = items.get(classType);
-			if(subObj instanceof JSONClass){
-				JSONClass subClazz = (JSONClass) subObj;
+			if(subObj instanceof JSONClass subClazz){
 				// Verify keys
 				Set<String> subKeys = subClazz.getKeys();
 				assertEquals(2, subKeys.size());
@@ -101,16 +98,15 @@ public class JSONConverterTest{
 	@Test
 	public void testSingleArray(){
 		String JSON = """
-                [\s
-				  null,
-				  true,
-				  "test_string"
+				[\s
+					null,
+					true,
+					"test_string"
 				]
 				""";
 		
 		JSONObject obj = converter.parseJSON(JSON);
-		if(obj instanceof JSONArray){
-			JSONArray array = (JSONArray) obj;
+		if(obj instanceof JSONArray array){
 			List<Object> items = array.getItems();
 			assertEquals(3, items.size());
 			assertNull(items.get(0));
@@ -137,8 +133,7 @@ public class JSONConverterTest{
 				""";
 		
 		JSONObject obj = converter.parseJSON(JSON);
-		if(obj instanceof JSONArray){
-			JSONArray array = (JSONArray) obj;
+		if(obj instanceof JSONArray array){
 			List<Object> items = array.getItems();
 			assertEquals(3, items.size());
 			assertNull(items.get(0));
@@ -146,8 +141,7 @@ public class JSONConverterTest{
 			
 			// Verify inner array
 			Object subObj = items.get(1);
-			if(subObj instanceof JSONArray){
-				JSONArray subArray = (JSONArray) subObj;
+			if(subObj instanceof JSONArray subArray){
 				List<Object> subItems = subArray.getItems();
 				assertEquals(4, subItems.size());
 				assertEquals(true, subItems.get(0));
