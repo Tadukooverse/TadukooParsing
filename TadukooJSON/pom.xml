@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>TadukooParsingParent</artifactId>
 		<groupId>com.github.tadukoo.parsing</groupId>
-		<version>0.3-Alpha-SNAPSHOT</version>
+		<version>0.3-Alpha</version>
 	</parent>
 	<artifactId>TadukooJSON</artifactId>
 	<dependencies>
