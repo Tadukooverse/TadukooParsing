@@ -1,19 +1,19 @@
 package com.github.tadukoo.parsing.fileformat;
 
 import com.github.tadukoo.util.FileUtil;
+import com.github.tadukoo.util.logger.EasyLogger;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * This class is used to verify that files match a particular {@link FileFormatSchema}.
  * 
  * @author Logan Ferree (Tadukoo)
- * @version 0.1-Alpha-SNAPSHOT
+ * @version Alpha v.0.3
+ * @since Alpha v.0.1
  */
 public class FileFormatSchemaVerification{
 	
@@ -24,13 +24,13 @@ public class FileFormatSchemaVerification{
 	 * Checks if the file located at the given file path matches the given 
 	 * {@link FileFormatSchema} or not.
 	 * 
-	 * @param logger The Logger to log any messages
+	 * @param logger The {@link EasyLogger} to log any messages
 	 * @param format The FileFormat to use for checking against
 	 * @param schema The FileFormatSchema to use for checking against
 	 * @param filepath The path to the file to be checked
 	 * @return If the file matches the formatting or not
 	 */
-	public static boolean verifyFileFormat(Logger logger, FileFormat format, FileFormatSchema schema, String filepath){
+	public static boolean verifyFileFormat(EasyLogger logger, FileFormat format, FileFormatSchema schema, String filepath){
 		// Load the file
 		Node headNode = Node.loadFromFile(filepath);
 		
@@ -43,16 +43,16 @@ public class FileFormatSchemaVerification{
 	 * <br>
 	 * This version allows for checking Nodes before they're saved.
 	 * 
-	 * @param logger The Logger to log any messages
+	 * @param logger The {@link EasyLogger} to log any messages
 	 * @param format The FileFormat to use for checking against
 	 * @param schema The FileFormatSchema to use for checking against
 	 * @param filepath The path to the file to be checked
 	 * @param headNode The head Node of those to be checked
 	 * @return If the file (/Nodes) matches the formatting or not
 	 */
-	public static boolean verifyFileFormat(Logger logger, FileFormat format, FileFormatSchema schema, String filepath,
+	public static boolean verifyFileFormat(EasyLogger logger, FileFormat format, FileFormatSchema schema, String filepath,
 	                                       Node headNode){
-		logger.log(Level.INFO, "Starting verification of file " + filepath + "...");
+		logger.logInfo("Starting verification of file " + filepath + "...");
 		// This will be the return value. It gets set false on any failure to match the FileFormatSchema
 		boolean correctFileFormat = true;
 		
@@ -61,7 +61,7 @@ public class FileFormatSchemaVerification{
 		
 		// Verify that the FileFormatSchema's fileExtension matches the one on the actual file
 		if(!schema.getFileExtension().equalsIgnoreCase(fileExtension)){
-			logger.log(Level.SEVERE, "File Extension doesn't match!\n"
+			logger.logError("File Extension doesn't match!\n"
 					+ "* Expected: " + schema.getFileExtension() + ", but was: " + fileExtension + "!");
 			correctFileFormat = false;
 		}
@@ -88,9 +88,9 @@ public class FileFormatSchemaVerification{
 		
 		// Give a logger message on whether the format of the file matched or not
 		if(correctFileFormat){
-			logger.log(Level.INFO, "File: " + filepath + " matches the FileFormatSchema!");
+			logger.logInfo("File: " + filepath + " matches the FileFormatSchema!");
 		}else{
-			logger.log(Level.WARNING, "File: " + filepath + " does not match the FileFormatSchema!");
+			logger.logWarning("File: " + filepath + " does not match the FileFormatSchema!");
 		}
 		
 		// Return whether the file's format matches that of the FileFormatSchema or not
@@ -120,14 +120,14 @@ public class FileFormatSchemaVerification{
 	 * Checks if the given Node (and any children and siblings down the line) matches 
 	 * the proper formatting passed in or not.
 	 * 
-	 * @param logger The Logger to log any messages
+	 * @param logger The {@link EasyLogger} to log any messages
 	 * @param formatNodes The FormatNodes as a Map of their names to them
 	 * @param node The Node to be tested
 	 * @param nodeNames The allowed names for this particular Node's format
 	 * @param filepath The path to the file (used in some formatting)
 	 * @return If the Node matches the formatting appropriately or not
 	 */
-	private static boolean verifyNode(Logger logger, Map<String, FormatNode> formatNodes, Node node,
+	private static boolean verifyNode(EasyLogger logger, Map<String, FormatNode> formatNodes, Node node,
 			List<String> nodeNames, String filepath){
 		// Need to determine if the passed-in Node is a good one or not
 		boolean goodNode = false;
@@ -153,7 +153,7 @@ public class FileFormatSchemaVerification{
 				
 				// Check if this Node matches the current FormatNode
 				goodNode = FormatNodeVerification.verifySingleNode(
-						FormatNodeVerification.singleNodeVerificationParametersBuilder()
+						NodeVerificationCriteria.builder()
 												.logger(logger)
 												.filepath(filepath)
 												.node(node)
@@ -162,7 +162,7 @@ public class FileFormatSchemaVerification{
 				
 				// If not a good Node, give a Logger message
 				if(!goodNode){
-					logger.log(Level.FINE, "Node does not match the " + name + " FormatNode!");
+					logger.logDebugFine("Node does not match the " + name + " FormatNode!");
 				}
 				
 				// Increment i to move to next name if it's not a match
@@ -171,7 +171,7 @@ public class FileFormatSchemaVerification{
 			
 			// If no match was made, we got an issue
 			if(!goodNode){
-				logger.log(Level.WARNING, "Node could not be identified!");
+				logger.logWarning("Node could not be identified!");
 			}else{
 				// If it's a match, continue in checking child and next sibling
 				// Note: Parent and PrevSibling are not checked due to proper relationships being enforced elsewhere
@@ -186,9 +186,9 @@ public class FileFormatSchemaVerification{
 		
 		// If it's a good Node, give a Logger message about it
 		if(goodNode && node != null){
-			logger.log(Level.FINER, "This was a good node!\n"
+			logger.logDebugFiner("This was a good node!\n"
 					+ "* Format: " + format.getNodeRegex() + "\n"
-					+ "* Actual: " + node.toString());
+					+ "* Actual: " + node);
 		}
 		
 		return goodNode;

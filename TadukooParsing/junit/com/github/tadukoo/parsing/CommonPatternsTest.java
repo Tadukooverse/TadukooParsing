@@ -44,6 +44,31 @@ public class CommonPatternsTest{
 	}
 	
 	@Test
+	public void testNullableBooleanFormatPattern(){
+		assertEquals("(true|false|null)", CommonPatterns.nullableBooleanFormat.pattern());
+	}
+	
+	@Test
+	public void testNullableBooleanFormatTrue(){
+		assertTrue(CommonPatterns.nullableBooleanFormat.matcher("true").matches());
+	}
+	
+	@Test
+	public void testNullableBooleanFormatFalse(){
+		assertTrue(CommonPatterns.nullableBooleanFormat.matcher("false").matches());
+	}
+	
+	@Test
+	public void testNullableBooleanFormatNull(){
+		assertTrue(CommonPatterns.nullableBooleanFormat.matcher("null").matches());
+	}
+	
+	@Test
+	public void testNullableBooleanFormatFailure(){
+		assertFalse(CommonPatterns.nullableBooleanFormat.matcher("some_string").matches());
+	}
+	
+	@Test
 	public void testNumberFormatPattern(){
 		assertEquals("((-)?(\\d)*(\\.\\d*)?(E([+\\-])\\d*)?)", CommonPatterns.numberFormat.pattern());
 	}

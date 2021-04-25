@@ -1,38 +1,24 @@
 package com.github.tadukoo.parsing.fileformat;
 
+import com.github.tadukoo.parsing.TadFormatRegexConverter;
 import com.github.tadukoo.util.ListUtil;
 import com.github.tadukoo.util.StringUtil;
+import com.github.tadukoo.util.logger.EasyLogger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Represents all the information about how a {@link Node} should be formatted for a {@link FileFormat}.
  * 
  * @author Logan Ferree (Tadukoo)
- * @version 0.1-Alpha-SNAPSHOT
+ * @version Alpha v.0.3
+ * @since Alpha v.0.1
  */
 public class FormatNode{
+	
 	/** The text used to signify a null (e.g. as an allowed Node for parent/child/sibling) */
 	public static final String NULL_NODE = "<null>";
-	
-	/** The name of the Node - used to distinguish in parent/child/sibling requirements */
-	private final String name;
-	/** The regex used to ensure the title is of the correct format */
-	private final String titleRegex;
-	/** The regex used to ensure the data is of the correct format */
-	private final String dataRegex;
-	/** The required level of the Node */
-	private final int level;
-	/** Names of allowed parents of the Node */
-	private final List<String> parentNames;
-	/** Names of allowed children of the Node */
-	private final List<String> childNames;
-	/** Names of allowed previous siblings of the Node */
-	private final List<String> prevSiblingNames;
-	/** Names of allowed next siblings of the Node */
-	private final List<String> nextSiblingNames;
 	
 	/**
 	 * Builder for constructing a {@link FormatNode} object.
@@ -68,11 +54,12 @@ public class FormatNode{
 	 * </ul>
 	 * 
 	 * @author Logan Ferree (Tadukoo)
-	 * @version 0.1-Alpha-SNAPSHOT
+	 * @version Alpha v.0.3
+	 * @since Alpha v.0.1
 	 */
 	public static class FormatNodeBuilder{
-		/** The Logger to use for logging initialization messages */
-		private Logger logger = null;
+		/** The {@link EasyLogger} to use for logging initialization messages */
+		private EasyLogger logger = null;
 		/** Text to use in parsing into a FormatNode */
 		private String text = null;
 		/** The name of the Node for identification purposes */
@@ -100,12 +87,12 @@ public class FormatNode{
 		private FormatNodeBuilder(){ }
 		
 		/**
-		 * Set the {@link Logger} to use for logging initialization messages.
+		 * Set the {@link EasyLogger} to use for logging initialization messages.
 		 * 
-		 * @param logger The Logger to use for logging messages
+		 * @param logger The {@link EasyLogger} to use for logging messages
 		 * @return The FormatNodeBuilder, to continue in building
 		 */
-		public FormatNodeBuilder logger(Logger logger){
+		public FormatNodeBuilder logger(EasyLogger logger){
 			this.logger = logger;
 			return this;
 		}
@@ -432,13 +419,19 @@ public class FormatNode{
 					errors.add("Name can't be null!");
 				}
 				
-				// TitleFormat converts to titleRegex, so can't have both
-				if(titleFormat != null && titleRegex != null){
+				// TitleFormat or titleRegex is required
+				if(titleFormat == null && titleRegex == null){
+					errors.add("Must specify either titleFormat or titleRegex!");
+				}else if(titleFormat != null && titleRegex != null){
+					// TitleFormat converts to titleRegex, so can't have both
 					errors.add("Can't specify both title format and title regex!");
 				}
 				
-				// DataFormat converts to dataRegex, so can't have both
-				if(dataFormat != null && dataRegex != null){
+				// DataFormat or dataRegex is required
+				if(dataFormat == null && dataRegex == null){
+					errors.add("Must specify either dataFormat or dataRegex!");
+				}else if(dataFormat != null && dataRegex != null){
+					// DataFormat converts to dataRegex, so can't have both
 					errors.add("Can't specify both data format and data regex!");
 				}
 				
@@ -450,7 +443,8 @@ public class FormatNode{
 			
 			// If there were issues, throw an IllegalArgumentException with them
 			if(!errors.isEmpty()){
-				throw new IllegalArgumentException("Failed to create FormatNode: " + errors.toString());
+				throw new IllegalArgumentException("Failed to create FormatNode: " +
+						StringUtil.buildStringWithNewLines(errors));
 			}
 		}
 		
@@ -459,7 +453,7 @@ public class FormatNode{
 		 */
 		private void convertText(){
 			// Convert the text into Nodes and grab them
-			Node headNode = new Node(text);
+			Node headNode = Node.loadFromString(text);
 			Node titleFormatNode = headNode.getChild();
 			Node dataFormatNode = titleFormatNode.getNextSibling();
 			Node levelNode = dataFormatNode.getNextSibling();
@@ -473,26 +467,18 @@ public class FormatNode{
 			
 			// Grab the title TFormatting or regex off the title format Node
 			switch(titleFormatNode.getTitle()){
-				case "Format":
-					titleFormat = titleFormatNode.getData();
-					break;
-				case "Regex":
-					titleRegex = titleFormatNode.getData();
-					break;
-				default:
-					throw new IllegalArgumentException("Unknown title format type: " + titleFormatNode.getTitle());
+				case "Format" -> titleFormat = titleFormatNode.getData();
+				case "Regex" -> titleRegex = titleFormatNode.getData();
+				default -> throw new IllegalArgumentException("Unknown title format type: " +
+						titleFormatNode.getTitle());
 			}
 			
 			// Grab the data TFormatting or regex off the data format Node
 			switch(dataFormatNode.getTitle()){
-				case "Format":
-					dataFormat = dataFormatNode.getData();
-					break;
-				case "Regex":
-					dataRegex = dataFormatNode.getData();
-					break;
-				default:
-					throw new IllegalArgumentException("Unknown data format type: " + dataFormatNode.getTitle());
+				case "Format" -> dataFormat = dataFormatNode.getData();
+				case "Regex" -> dataRegex = dataFormatNode.getData();
+				default -> throw new IllegalArgumentException("Unknown data format type: " +
+						dataFormatNode.getTitle());
 			}
 			
 			// Grab the level of the Node off the level Node
@@ -506,6 +492,9 @@ public class FormatNode{
 			prevSiblingNames = StringUtil.parseCommaSeparatedListFromString(prevSiblingNode.getData());
 			// Grab the allowed next sibling Node names off the next sibling Node
 			nextSiblingNames = StringUtil.parseCommaSeparatedListFromString(nextSiblingNode.getData());
+			
+			// Set text to null so we don't hit errors of specifying text and other info
+			text = null;
 		}
 		
 		/**
@@ -518,6 +507,11 @@ public class FormatNode{
 			return ListUtil.createList(NULL_NODE);
 		}
 		
+		/**
+		 * Builds a new {@link FormatNode} with the specified parameters after checking for any errors.
+		 *
+		 * @return The newly built {@link FormatNode}
+		 */
 		public FormatNode build(){
 			// Check for any errors in the data
 			checkForErrors();
@@ -560,6 +554,23 @@ public class FormatNode{
 									parentNames, childNames, prevSiblingNames, nextSiblingNames);
 		}
 	}
+	
+	/** The name of the Node - used to distinguish in parent/child/sibling requirements */
+	private final String name;
+	/** The regex used to ensure the title is of the correct format */
+	private final String titleRegex;
+	/** The regex used to ensure the data is of the correct format */
+	private final String dataRegex;
+	/** The required level of the Node */
+	private final int level;
+	/** Names of allowed parents of the Node */
+	private final List<String> parentNames;
+	/** Names of allowed children of the Node */
+	private final List<String> childNames;
+	/** Names of allowed previous siblings of the Node */
+	private final List<String> prevSiblingNames;
+	/** Names of allowed next siblings of the Node */
+	private final List<String> nextSiblingNames;
 	
 	/**
 	 * Constructs a FormatNode with the given data.
@@ -671,31 +682,50 @@ public class FormatNode{
 		 */
 		
 		// The head Node = "Format" + name
-		Node headNode = new Node("Format", name, 0, null, null, null, null);
+		Node headNode = Node.builder()
+				.title("Format").data(name)
+				.build();
 		// The title format Node = "Regex"/"Format" + titleRegex
-		Node titleFormatNode = new Node("Regex", titleRegex, 1, headNode, null, null, null);
+		Node titleFormatNode = Node.builder()
+				.title("Regex").data(titleRegex).level(1)
+				.parent(headNode)
+				.build();
 		headNode.setChild(titleFormatNode);
 		// The data format Node = "Regex"/"Format" + dataRegex
-		Node dataFormatNode = new Node("Regex", dataRegex, 1, null, null, titleFormatNode, null);
+		Node dataFormatNode = Node.builder()
+				.title("Regex").data(dataRegex).level(1)
+				.prevSibling(titleFormatNode)
+				.build();
 		titleFormatNode.setNextSibling(dataFormatNode);
 		// The level Node = "Level" + level
-		Node levelNode = new Node("Level", String.valueOf(level), 1, null, null, dataFormatNode, null);
+		Node levelNode = Node.builder()
+				.title("Level").data(String.valueOf(level)).level(1)
+				.prevSibling(dataFormatNode)
+				.build();
 		dataFormatNode.setNextSibling(levelNode);
 		// The parents Node = "Parents" + parentNames
-		Node parentsNode = new Node("Parents", StringUtil.buildCommaSeparatedString(parentNames), 1, null, null,
-				levelNode, null);
+		Node parentsNode = Node.builder()
+				.title("Parents").data(StringUtil.buildCommaSeparatedString(parentNames)).level(1)
+				.prevSibling(levelNode)
+				.build();
 		levelNode.setNextSibling(parentsNode);
 		// The children Node = "Children" + childNames
-		Node childrenNode = new Node("Children", StringUtil.buildCommaSeparatedString(childNames), 1, null, null,
-				parentsNode, null);
+		Node childrenNode = Node.builder()
+				.title("Children").data(StringUtil.buildCommaSeparatedString(childNames)).level(1)
+				.prevSibling(parentsNode)
+				.build();
 		parentsNode.setNextSibling(childrenNode);
 		// The previous sibling Node = "PrevSiblings" + prevSiblingNames
-		Node prevSiblingNode = new Node("PrevSiblings", StringUtil.buildCommaSeparatedString(prevSiblingNames), 1,
-				null, null, childrenNode, null);
+		Node prevSiblingNode = Node.builder()
+				.title("PrevSiblings").data(StringUtil.buildCommaSeparatedString(prevSiblingNames)).level(1)
+				.prevSibling(childrenNode)
+				.build();
 		childrenNode.setNextSibling(prevSiblingNode);
 		// The next sibling Node = "NextSiblings" + nextSiblingNames
-		Node nextSiblingNode = new Node("NextSiblings", StringUtil.buildCommaSeparatedString(nextSiblingNames), 1,
-				null, null, prevSiblingNode, null);
+		Node nextSiblingNode = Node.builder()
+				.title("NextSiblings").data(StringUtil.buildCommaSeparatedString(nextSiblingNames)).level(1)
+				.prevSibling(prevSiblingNode)
+				.build();
 		prevSiblingNode.setNextSibling(nextSiblingNode);
 		
 		// Convert these Nodes into a string to be returned

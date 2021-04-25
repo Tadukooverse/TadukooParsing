@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.tadukoo.parsing</groupId>
 	<artifactId>TadukooParsingParent</artifactId>
-	<version>0.2.3-Alpha</version>
+	<version>0.3-Alpha</version>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 	<description>Various libraries for parsing different formats</description>
@@ -41,7 +41,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
 		<!-- Java and JUnit Versions -->
-		<java.version>15</java.version>
+		<java.version>16</java.version>
 		<junit.jupiter.version>5.7.0</junit.jupiter.version>
 		<junit.platform.version>1.7.0</junit.platform.version>
 		
@@ -66,7 +66,7 @@
 		<directory.eclipse.annotationprocessing>.apt_generated</directory.eclipse.annotationprocessing>
 		
 		<!-- Tadukoo Util Versions -->
-		<tadukoo.util.version>0.3.1-Alpha</tadukoo.util.version>
+		<tadukoo.util.version>0.4-Alpha</tadukoo.util.version>
 		<tadukoo.util.lang.version>${tadukoo.util.version}</tadukoo.util.lang.version>
 		<tadukoo.util.functions.version>${tadukoo.util.version}</tadukoo.util.functions.version>
 		<tadukoo.util.util.version>${tadukoo.util.version}</tadukoo.util.util.version>

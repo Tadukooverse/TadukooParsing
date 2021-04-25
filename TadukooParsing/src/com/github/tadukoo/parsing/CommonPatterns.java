@@ -6,7 +6,8 @@ import java.util.regex.Pattern;
  * Common Patterns is an interface containing common {@link Pattern}s for use in parsing
  *
  * @author Logan Ferree (Tadukoo)
- * @since Alpha v.0.3
+ * @version Alpha v.0.3
+ * @since Alpha v.0.2.3
  */
 public interface CommonPatterns{
 	
@@ -15,6 +16,9 @@ public interface CommonPatterns{
 	
 	/** Pattern to match a boolean (true or false) */
 	Pattern booleanFormat = Pattern.compile("(true|false)");
+	
+	/** Pattern to match a Boolean (true, false, or null) */
+	Pattern nullableBooleanFormat = Pattern.compile("(true|false|null)");
 	
 	/** Pattern to match a number (e.g. 3, 4.192, or 1.928E+32) */
 	Pattern numberFormat = Pattern.compile("((-)?(\\d)*(\\.\\d*)?(E([+\\-])\\d*)?)");

@@ -1,0 +1,8 @@
+TadFormat:
+  TadFormat Version Num:1
+  File Format:Test Format
+    Schema:
+      Version:v1
+      Version Num:1
+content:derp
+  more-content:derp2
