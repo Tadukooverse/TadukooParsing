@@ -1,8 +1,11 @@
 package com.github.tadukoo.parsing.json;
 
 import com.github.tadukoo.parsing.CommonPatterns;
+import com.github.tadukoo.util.FileUtil;
 import com.github.tadukoo.util.tuple.Pair;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +47,7 @@ public class JSONConverter implements CommonPatterns{
 	private Matcher stringFormatMatcher;
 	
 	/**
-	 * Parses the given string into a JSON object (either an array or a class, and returns it.
+	 * Parses the given string into a JSON object (either an array or a class), and returns it.
 	 *
 	 * @param JSONString The string to be parsed
 	 * @return A JSONObject (either a JSONClass or JSONArray)
@@ -67,6 +70,30 @@ public class JSONConverter implements CommonPatterns{
 			case classStartChar -> parseJSONClass(JSONString, ++charIndex).getLeft();
 			default -> throw new IllegalArgumentException("String is not valid JSON");
 		};
+	}
+	
+	/**
+	 * Reads the file at the given filepath and parses it into a JSON object
+	 * (either an array or a class), and returns it.
+	 *
+	 * @param filepath The path to the file to be read
+	 * @return A JSONObject (either a JSONClass or JSONArray)
+	 * @throws IOException if something goes wrong in reading the file
+	 */
+	public JSONObject parseJSONFromFile(String filepath) throws IOException{
+		return parseJSON(FileUtil.readAsString(filepath));
+	}
+	
+	/**
+	 * Reads the file and parses it into a JSON object
+	 * (either an array or a class), and returns it.
+	 *
+	 * @param file The {@link File} to be read
+	 * @return A JSONObject (either a JSONClass or JSONArray)
+	 * @throws IOException if something goes wrong in reading the file
+	 */
+	public JSONObject parseJSONFromFile(File file) throws IOException{
+		return parseJSON(FileUtil.readAsString(file));
 	}
 	
 	/**

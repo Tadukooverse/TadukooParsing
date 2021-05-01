@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +29,54 @@ public class JSONConverterTest{
 				"\n}";
 		
 		JSONObject obj = converter.parseJSON(JSON);
+		if(obj instanceof JSONClass clazz){
+			// Verify keys
+			Set<String> keys = clazz.getKeys();
+			assertEquals(4, keys.size());
+			assertTrue(keys.contains(nullType));
+			assertTrue(keys.contains(boolTypeTrue));
+			assertTrue(keys.contains(boolTypeFalse));
+			assertTrue(keys.contains(stringType));
+			
+			// Verify items
+			Map<String, Object> items = clazz.getMap();
+			assertEquals(4, items.size());
+			assertNull(items.get(nullType));
+			assertEquals(true, items.get(boolTypeTrue));
+			assertEquals(false, items.get(boolTypeFalse));
+			assertEquals("test_string", items.get(stringType));
+		}else{
+			throw new IllegalStateException("Didn't get a JSONClass object");
+		}
+	}
+	
+	@Test
+	public void testSingleClassFromFilepath() throws IOException{
+		JSONObject obj = converter.parseJSONFromFile("junit-resource/SingleClassTest.json");
+		if(obj instanceof JSONClass clazz){
+			// Verify keys
+			Set<String> keys = clazz.getKeys();
+			assertEquals(4, keys.size());
+			assertTrue(keys.contains(nullType));
+			assertTrue(keys.contains(boolTypeTrue));
+			assertTrue(keys.contains(boolTypeFalse));
+			assertTrue(keys.contains(stringType));
+			
+			// Verify items
+			Map<String, Object> items = clazz.getMap();
+			assertEquals(4, items.size());
+			assertNull(items.get(nullType));
+			assertEquals(true, items.get(boolTypeTrue));
+			assertEquals(false, items.get(boolTypeFalse));
+			assertEquals("test_string", items.get(stringType));
+		}else{
+			throw new IllegalStateException("Didn't get a JSONClass object");
+		}
+	}
+	
+	@Test
+	public void testSingleClassFromFile() throws IOException{
+		JSONObject obj = converter.parseJSONFromFile(new File("junit-resource/SingleClassTest.json"));
 		if(obj instanceof JSONClass clazz){
 			// Verify keys
 			Set<String> keys = clazz.getKeys();
