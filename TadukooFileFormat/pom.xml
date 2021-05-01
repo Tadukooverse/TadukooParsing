@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.github.tadukoo.parsing</groupId>
 		<artifactId>TadukooParsingParent</artifactId>
-		<version>0.3-Alpha</version>
+		<version>0.3.1-Alpha-SNAPSHOT</version>
 	</parent>
 	<artifactId>TadukooFileFormat</artifactId>
 	<dependencies>
