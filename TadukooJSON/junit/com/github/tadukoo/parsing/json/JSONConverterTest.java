@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@SuppressWarnings("unchecked")
 public class JSONConverterTest{
 	private final JSONConverter converter = new JSONConverter();
 	private final String nullType = "null_type";

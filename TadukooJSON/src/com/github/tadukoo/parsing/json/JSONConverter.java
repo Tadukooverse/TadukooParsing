@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
  * into JSON strings.
  *
  * @author Logan Ferree (Tadukoo)
- * @version Alpha v.0.3
+ * @version Alpha v.0.3.1
  * @since Alpha v.0.1
  */
 public class JSONConverter implements CommonPatterns{
@@ -76,7 +76,7 @@ public class JSONConverter implements CommonPatterns{
 	 * @param startIndex The index of the character AFTER the opening bracket - [
 	 * @return The parsed JSONArray, and the index of the first character after the closing bracket
 	 */
-	private Pair<JSONArray, Integer> parseJSONArray(String JSONString, int startIndex){
+	private Pair<JSONArray<Object>, Integer> parseJSONArray(String JSONString, int startIndex){
 		int charIndex = startIndex;
 		List<Object> items = new ArrayList<>();
 		
@@ -108,7 +108,7 @@ public class JSONConverter implements CommonPatterns{
 		
 		// Build the JSON Array finally and return charIndex for recursion
 		// charIndex is incremented due to the ending array character
-		return Pair.of(new AbstractJSONArray(items){ }, ++charIndex);
+		return Pair.of(new JSONArrayList<>(items){ }, ++charIndex);
 	}
 	
 	/**
@@ -212,7 +212,7 @@ public class JSONConverter implements CommonPatterns{
 				yield clazzPair.getLeft();
 			}
 			case arrayStartChar -> {
-				Pair<JSONArray, Integer> arrayPair = parseJSONArray(JSONString, ++charIndex);
+				Pair<JSONArray<Object>, Integer> arrayPair = parseJSONArray(JSONString, ++charIndex);
 				charIndex = arrayPair.getRight();
 				yield arrayPair.getLeft();
 			}
