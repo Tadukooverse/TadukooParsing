@@ -313,4 +313,15 @@ public class JSONConverter implements CommonPatterns{
 					"type: " + obj.getClass().getCanonicalName());
 		}
 	}
+	
+	/**
+	 * Converts the given object to JSON and saves it to a file at the given filepath.
+	 *
+	 * @param filepath The path of the file to save the JSON to
+	 * @param obj The object to be converted to JSON
+	 * @throws IOException If anything goes wrong in writing the file
+	 */
+	public void saveJSONFile(String filepath, Object obj) throws IOException{
+		FileUtil.writeFile(filepath, convertToJSON(obj));
+	}
 }
