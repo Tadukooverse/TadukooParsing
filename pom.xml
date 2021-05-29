@@ -16,7 +16,6 @@
 	<modules>
 		<module>TadukooParsing</module>
 		<module>TadukooJSON</module>
-		<module>TadukooJava</module>
 		<module>TadukooFileFormat</module>
 	</modules>
 	<properties>
