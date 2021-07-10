@@ -30,7 +30,7 @@ public class TadFormatNodeHeader{
 	/** The name for the File Format Schema Version Number Node */
 	private static final String VERSION_NUMBER = "Version Num";
 	
-	// Not allowed to create a TadFormatNodeHeader
+	/** Not allowed to create a TadFormatNodeHeader */
 	private TadFormatNodeHeader(){ }
 	
 	/**
@@ -72,6 +72,7 @@ public class TadFormatNodeHeader{
 	 * Creates a {@link FormatNode} for the File Format Node.
 	 * 
 	 * @param logger The {@link EasyLogger} to use in logging any issues
+	 * @param format The {@link FileFormat} to use for information
 	 * @return The FormatNode for the File Format Node
 	 */
 	private static FormatNode getFileFormatNode(EasyLogger logger, FileFormat format){
@@ -108,6 +109,7 @@ public class TadFormatNodeHeader{
 	 * Creates a {@link FormatNode} for the File Format Schema Version Node.
 	 * 
 	 * @param logger The {@link EasyLogger} to use in logging any issues
+	 * @param schema The {@link FileFormatSchema} to use for information
 	 * @return The FormatNode for the File Format Schema Version Node
 	 */
 	private static FormatNode getVersionStringNode(EasyLogger logger, FileFormatSchema schema){
@@ -126,6 +128,7 @@ public class TadFormatNodeHeader{
 	 * Creates a {@link FormatNode} for the File Format Schema Version Number Node.
 	 * 
 	 * @param logger The {@link EasyLogger} to use in logging any issues
+	 * @param schema The {@link FileFormatSchema} to use for information
 	 * @return The FormatNode for the File Format Schema Version Number Node
 	 */
 	private static FormatNode getVersionNumNode(EasyLogger logger, FileFormatSchema schema){

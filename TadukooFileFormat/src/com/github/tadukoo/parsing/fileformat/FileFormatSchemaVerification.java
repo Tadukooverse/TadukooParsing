@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  */
 public class FileFormatSchemaVerification{
 	
-	// Not allowed to make a FileFormatSchemaVerification instance
+	/** Not allowed to make a FileFormatSchemaVerification instance */
 	private FileFormatSchemaVerification(){ }
 	
 	/**

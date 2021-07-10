@@ -116,7 +116,7 @@ public class NodeVerificationCriteria{
 		/** The expected next sibling for the Node */
 		private Node nextSibling = null;
 		
-		// Not allowed to create this outside of FormatNodeVerification
+		/** Not allowed to create this outside of FormatNodeVerification */
 		private NodeVerificationCriteriaBuilder(){ }
 		
 		/**

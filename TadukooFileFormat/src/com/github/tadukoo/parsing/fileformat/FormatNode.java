@@ -83,7 +83,7 @@ public class FormatNode{
 		/** Names of allowed next sibling Nodes */
 		private List<String> nextSiblingNames = null;
 		
-		// Not allowed to make FormatNodeBuilder outside of FormatNode
+		/** Not allowed to make FormatNodeBuilder outside of FormatNode */
 		private FormatNodeBuilder(){ }
 		
 		/**

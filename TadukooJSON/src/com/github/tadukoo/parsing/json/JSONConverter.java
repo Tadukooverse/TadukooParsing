@@ -41,9 +41,13 @@ public class JSONConverter implements CommonPatterns{
 	/*
 	 * Matchers to use during parsing (they're instantiated at the start of parseJSON)
 	 */
+	/** A Matcher for {@link #nullFormat} */
 	private Matcher nullFormatMatcher;
+	/** A Matcher for {@link #booleanFormat} */
 	private Matcher booleanFormatMatcher;
+	/** A Matcher for {@link #numberFormat} */
 	private Matcher numberFormatMatcher;
+	/** A Matcher for {@link #quotedStringFormat} */
 	private Matcher stringFormatMatcher;
 	
 	/**
