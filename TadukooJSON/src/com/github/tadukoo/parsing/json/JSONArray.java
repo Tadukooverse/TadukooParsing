@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * @version Alpha v.0.3.1
  * @since Alpha v.0.1
  */
-public interface JSONArray<T> extends JSONObject{
+public interface JSONArray<T> extends JSONObject, List<T>{
 	
 	/**
 	 * @return The list of items in the array
