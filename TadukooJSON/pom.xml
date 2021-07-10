@@ -24,6 +24,11 @@
 			<groupId>${junit.platform.groupID}</groupId>
 			<artifactId>${junit.platform.artifactID}</artifactId>
 		</dependency>
+		<!-- Tadukoo JUnit -->
+		<dependency>
+			<groupId>${tadukoo.junit.groupID}</groupId>
+			<artifactId>${tadukoo.junit.junit.artifactID}</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>${directory.source}</sourceDirectory>

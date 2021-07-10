@@ -1,17 +1,32 @@
 package com.github.tadukoo.parsing.json;
 
+import com.github.tadukoo.junit.logger.JUnitEasyLogger;
 import com.github.tadukoo.util.map.MapUtil;
 import com.github.tadukoo.util.pojo.AbstractMappedPojo;
+import com.github.tadukoo.util.pojo.MappedPojo;
 import com.github.tadukoo.util.tuple.Pair;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JSONClassTest{
 	private JSONClass clazz = new AbstractJSONClass(){ };
+	
+	public static class TestClass extends AbstractJSONClass{
+		
+		public TestClass(){ }
+		
+		public TestClass(MappedPojo pojo){
+			super(pojo);
+		}
+	}
 	
 	@Test
 	public void testConstructor(){
@@ -139,5 +154,76 @@ public class JSONClassTest{
 		clazz.setItem("Derp", 5);
 		
 		assertEquals("{\"Derp\":5}", clazz.convertToJSON(new JSONConverter()));
+	}
+	
+	@Test
+	public void testGetJSONArrayItemNull()
+			throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException{
+		clazz.setItem("Table", null);
+		
+		JSONArray<TestClass> table = clazz.getJSONArrayItem("Table", TestClass.class);
+		assertNull(table);
+	}
+	
+	@Test
+	public void testGetJSONArrayItem()
+			throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException{
+		JSONArray<MappedPojo> brokenTable = new JSONArrayList<>();
+		TestClass testClass1 = new TestClass();
+		testClass1.setItem("Derp", "nope");
+		testClass1.setItem("Plop", 5);
+		brokenTable.add(testClass1);
+		JSONClass otherPojo = new AbstractJSONClass(){ };
+		otherPojo.setItem("Derp", "yep");
+		otherPojo.setItem("Plop", 42);
+		brokenTable.add(otherPojo);
+		clazz.setItem("Table", brokenTable);
+		
+		List<TestClass> table = clazz.getJSONArrayItem("Table", TestClass.class);
+		assertEquals(2, table.size());
+		assertEquals(testClass1, table.get(0));
+		TestClass testClass2 = table.get(1);
+		assertEquals("yep", testClass2.getItem("Derp"));
+		assertEquals(42, testClass2.getItem("Plop"));
+	}
+	
+	@Test
+	public void testGetJSONArrayItemNoThrowPass(){
+		JSONArray<MappedPojo> brokenTable = new JSONArrayList<>();
+		TestClass testClass1 = new TestClass();
+		testClass1.setItem("Derp", "nope");
+		testClass1.setItem("Plop", 5);
+		brokenTable.add(testClass1);
+		JSONClass otherPojo = new AbstractJSONClass(){ };
+		otherPojo.setItem("Derp", "yep");
+		otherPojo.setItem("Plop", 42);
+		brokenTable.add(otherPojo);
+		clazz.setItem("Table", brokenTable);
+		
+		List<TestClass> table = clazz.getJSONArrayItemNoThrow("Table", TestClass.class);
+		assertEquals(2, table.size());
+		assertEquals(testClass1, table.get(0));
+		TestClass testClass2 = table.get(1);
+		assertEquals("yep", testClass2.getItem("Derp"));
+		assertEquals(42, testClass2.getItem("Plop"));
+	}
+	
+	@Test
+	public void testGetJSONArrayItemNoThrow(){
+		clazz.setItem("Test", 5);
+		assertNull(clazz.getJSONArrayItemNoThrow("Test", TestClass.class));
+	}
+	
+	@Test
+	public void testGetListItemNoThrowLogger(){
+		clazz.setItem("Test", 5);
+		JUnitEasyLogger logger = new JUnitEasyLogger();
+		assertNull(clazz.getJSONArrayItemNoThrow(logger, "Test", TestClass.class));
+		List<JUnitEasyLogger.JUnitEasyLoggerEntry> entries = logger.getEntries();
+		assertEquals(1, entries.size());
+		JUnitEasyLogger.JUnitEasyLoggerEntry entry = entries.get(0);
+		assertEquals(Level.SEVERE, entry.level());
+		assertEquals("Failed to get JSON Array item: Test", entry.message());
+		assertNotNull(entry.throwable());
 	}
 }
