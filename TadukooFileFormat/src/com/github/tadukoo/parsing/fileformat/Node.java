@@ -106,7 +106,7 @@ public class Node{
 		/** The next sibling {@link Node} to this one */
 		private Node nextSibling = null;
 		
-		// Can't create NodeBuilder outside of Node
+		/** Can't create NodeBuilder outside of Node */
 		private NodeBuilder(){ }
 		
 		/**

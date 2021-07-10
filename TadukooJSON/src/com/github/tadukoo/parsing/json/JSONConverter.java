@@ -1,8 +1,11 @@
 package com.github.tadukoo.parsing.json;
 
 import com.github.tadukoo.parsing.CommonPatterns;
+import com.github.tadukoo.util.FileUtil;
 import com.github.tadukoo.util.tuple.Pair;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +16,7 @@ import java.util.regex.Matcher;
  * into JSON strings.
  *
  * @author Logan Ferree (Tadukoo)
- * @version Alpha v.0.3
+ * @version Alpha v.0.3.1
  * @since Alpha v.0.1
  */
 public class JSONConverter implements CommonPatterns{
@@ -38,13 +41,17 @@ public class JSONConverter implements CommonPatterns{
 	/*
 	 * Matchers to use during parsing (they're instantiated at the start of parseJSON)
 	 */
+	/** A Matcher for {@link #nullFormat} */
 	private Matcher nullFormatMatcher;
+	/** A Matcher for {@link #booleanFormat} */
 	private Matcher booleanFormatMatcher;
+	/** A Matcher for {@link #numberFormat} */
 	private Matcher numberFormatMatcher;
+	/** A Matcher for {@link #quotedStringFormat} */
 	private Matcher stringFormatMatcher;
 	
 	/**
-	 * Parses the given string into a JSON object (either an array or a class, and returns it.
+	 * Parses the given string into a JSON object (either an array or a class), and returns it.
 	 *
 	 * @param JSONString The string to be parsed
 	 * @return A JSONObject (either a JSONClass or JSONArray)
@@ -70,13 +77,37 @@ public class JSONConverter implements CommonPatterns{
 	}
 	
 	/**
+	 * Reads the file at the given filepath and parses it into a JSON object
+	 * (either an array or a class), and returns it.
+	 *
+	 * @param filepath The path to the file to be read
+	 * @return A JSONObject (either a JSONClass or JSONArray)
+	 * @throws IOException if something goes wrong in reading the file
+	 */
+	public JSONObject parseJSONFromFile(String filepath) throws IOException{
+		return parseJSON(FileUtil.readAsString(filepath));
+	}
+	
+	/**
+	 * Reads the file and parses it into a JSON object
+	 * (either an array or a class), and returns it.
+	 *
+	 * @param file The {@link File} to be read
+	 * @return A JSONObject (either a JSONClass or JSONArray)
+	 * @throws IOException if something goes wrong in reading the file
+	 */
+	public JSONObject parseJSONFromFile(File file) throws IOException{
+		return parseJSON(FileUtil.readAsString(file));
+	}
+	
+	/**
 	 * Parses a JSON array, where startIndex is the index of the character AFTER the opening bracket - [
 	 *
 	 * @param JSONString The JSON string to be parsed
 	 * @param startIndex The index of the character AFTER the opening bracket - [
 	 * @return The parsed JSONArray, and the index of the first character after the closing bracket
 	 */
-	private Pair<JSONArray, Integer> parseJSONArray(String JSONString, int startIndex){
+	private Pair<JSONArray<Object>, Integer> parseJSONArray(String JSONString, int startIndex){
 		int charIndex = startIndex;
 		List<Object> items = new ArrayList<>();
 		
@@ -108,7 +139,7 @@ public class JSONConverter implements CommonPatterns{
 		
 		// Build the JSON Array finally and return charIndex for recursion
 		// charIndex is incremented due to the ending array character
-		return Pair.of(new AbstractJSONArray(items){ }, ++charIndex);
+		return Pair.of(new JSONArrayList<>(items){ }, ++charIndex);
 	}
 	
 	/**
@@ -212,7 +243,7 @@ public class JSONConverter implements CommonPatterns{
 				yield clazzPair.getLeft();
 			}
 			case arrayStartChar -> {
-				Pair<JSONArray, Integer> arrayPair = parseJSONArray(JSONString, ++charIndex);
+				Pair<JSONArray<Object>, Integer> arrayPair = parseJSONArray(JSONString, ++charIndex);
 				charIndex = arrayPair.getRight();
 				yield arrayPair.getLeft();
 			}
@@ -285,5 +316,16 @@ public class JSONConverter implements CommonPatterns{
 			throw new IllegalArgumentException("Unknown how to convert object into JSON string" +
 					"type: " + obj.getClass().getCanonicalName());
 		}
+	}
+	
+	/**
+	 * Converts the given object to JSON and saves it to a file at the given filepath.
+	 *
+	 * @param filepath The path of the file to save the JSON to
+	 * @param obj The object to be converted to JSON
+	 * @throws IOException If anything goes wrong in writing the file
+	 */
+	public void saveJSONFile(String filepath, Object obj) throws IOException{
+		FileUtil.writeFile(filepath, convertToJSON(obj));
 	}
 }

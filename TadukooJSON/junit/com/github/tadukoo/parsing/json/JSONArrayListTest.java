@@ -9,8 +9,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class JSONArrayTest{
-	private JSONArray<Object> array = new JSONArrayList<>(ListUtil.createList("Derp", 5, true, null)){ };
+public class JSONArrayListTest{
+	private JSONArrayList<Object> array = new JSONArrayList<>(ListUtil.createList("Derp", 5, true, null)){ };
 	
 	@Test
 	public void testGetItems(){
@@ -36,5 +36,12 @@ public class JSONArrayTest{
 	public void testConvertToJSONEmpty(){
 		array = new JSONArrayList<>(new ArrayList<>()){ };
 		assertEquals("[]", array.convertToJSON(new JSONConverter()));
+	}
+	
+	@Test
+	public void testEmptyConstructor(){
+		array = new JSONArrayList<>();
+		assertEquals("[]", array.convertToJSON(new JSONConverter()));
+		assertEquals(0, array.size());
 	}
 }

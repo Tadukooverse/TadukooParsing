@@ -3,225 +3,34 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.github.tadukoo.maven</groupId>
+		<artifactId>TadukooMavenLibraryPOM</artifactId>
+		<version>0.3-Alpha</version>
+	</parent>
 	<groupId>com.github.tadukoo.parsing</groupId>
 	<artifactId>TadukooParsingParent</artifactId>
-	<version>0.3-Alpha</version>
+	<version>0.3.1-Alpha</version>
 	<packaging>pom</packaging>
-	<name>${project.artifactId}</name>
 	<description>Various libraries for parsing different formats</description>
-	<url>http://github.com/Tadukooverse/TadukooParsing</url>
-	<developers>
-		<developer>
-			<name>Logan Ferree (Tadukoo)</name>
-		</developer>
-	</developers>
-	<licenses>
-		<license>
-			<name>MIT License</name>
-			<url>https://github.com/Tadukooverse/TadukooParsing/blob/master/LICENSE</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<scm>
-		<url>https://github.com/Tadukooverse/TadukooParsing</url>
-		<connection>
-			scm:git:git://github.com/Tadukooverse/TadukooParsing.git
-		</connection>
-		<developerConnection>
-			scm:git:ssh://git@github.com:Tadukooverse/TadukooParsing.git
-		</developerConnection>
-	</scm>
 	<modules>
 		<module>TadukooParsing</module>
 		<module>TadukooJSON</module>
-		<module>TadukooJava</module>
 		<module>TadukooFileFormat</module>
 	</modules>
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
-		<!-- Java and JUnit Versions -->
-		<java.version>16</java.version>
-		<junit.jupiter.version>5.7.0</junit.jupiter.version>
-		<junit.platform.version>1.7.0</junit.platform.version>
-		
-		<!-- JUnit Information -->
-		<junit.jupiter.groupID>org.junit.jupiter</junit.jupiter.groupID>
-		<junit.jupiter.artifactID>junit-jupiter-engine</junit.jupiter.artifactID>
-		<junit.platform.groupID>org.junit.platform</junit.platform.groupID>
-		<junit.platform.artifactID>junit-platform-runner</junit.platform.artifactID>
-		
-		<!-- Maven Plugin Version -->
-		<maven.compiler.version>3.8.1</maven.compiler.version>
-		<maven.surefire.version>3.0.0-M4</maven.surefire.version>
-		<maven.source.version>3.2.1</maven.source.version>
-		<maven.javadoc.version>3.2.0</maven.javadoc.version>
-		<maven.gpg.version>1.6</maven.gpg.version>
-		
-		<!-- Directories -->
-		<directory.source>src</directory.source>
-		<directory.test>junit</directory.test>
-		<directory.resource>resource</directory.resource>
-		<directory.test-resource>junit-resource</directory.test-resource>
-		<directory.eclipse.annotationprocessing>.apt_generated</directory.eclipse.annotationprocessing>
-		
-		<!-- Tadukoo Util Versions -->
-		<tadukoo.util.version>0.4-Alpha</tadukoo.util.version>
-		<tadukoo.util.lang.version>${tadukoo.util.version}</tadukoo.util.lang.version>
-		<tadukoo.util.functions.version>${tadukoo.util.version}</tadukoo.util.functions.version>
-		<tadukoo.util.util.version>${tadukoo.util.version}</tadukoo.util.util.version>
-		
-		<!-- TadukooUtil Info -->
-		<tadukoo.util.groupID>com.github.tadukoo.util</tadukoo.util.groupID>
-		<tadukoo.util.lang.artifactID>TadukooLang</tadukoo.util.lang.artifactID>
-		<tadukoo.util.functions.artifactID>TadukooFunctions</tadukoo.util.functions.artifactID>
-		<tadukoo.util.util.artifactID>TadukooUtil</tadukoo.util.util.artifactID>
+		<!-- Info -->
+		<shortName>TadukooParsing</shortName>
+		<tadukoo.util.version>0.5-Beta</tadukoo.util.version>
 	</properties>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
 	<dependencyManagement>
 		<dependencies>
-			<!-- TadukooLang Dependency -->
-			<dependency>
-				<groupId>${tadukoo.util.groupID}</groupId>
-				<artifactId>${tadukoo.util.lang.artifactID}</artifactId>
-				<version>${tadukoo.util.lang.version}</version>
-			</dependency>
-			<!-- TadukooFunctions Dependency -->
-			<dependency>
-				<groupId>${tadukoo.util.groupID}</groupId>
-				<artifactId>${tadukoo.util.functions.artifactID}</artifactId>
-				<version>${tadukoo.util.functions.version}</version>
-			</dependency>
-			<!-- TadukooUtil Dependency -->
-			<dependency>
-				<groupId>${tadukoo.util.groupID}</groupId>
-				<artifactId>${tadukoo.util.util.artifactID}</artifactId>
-				<version>${tadukoo.util.util.version}</version>
-			</dependency>
 			<!-- TadukooParsing Dependency -->
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>TadukooParsing</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<!-- JUnit Dependencies -->
-			<dependency>
-				<groupId>${junit.jupiter.groupID}</groupId>
-				<artifactId>${junit.jupiter.artifactID}</artifactId>
-				<version>${junit.jupiter.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>${junit.platform.groupID}</groupId>
-				<artifactId>${junit.platform.artifactID}</artifactId>
-				<version>${junit.platform.version}</version>
-				<scope>test</scope>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>${maven.compiler.version}</version>
-					<configuration>
-						<release>${java.version}</release>
-					</configuration>
-				</plugin>
-				<plugin>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>${maven.surefire.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.6</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>prepare-agent</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>report</id>
-							<phase>test</phase>
-							<goals>
-								<goal>report</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.sonatype.plugins</groupId>
-					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<version>1.6.8</version>
-					<extensions>true</extensions>
-					<configuration>
-						<serverId>ossrh</serverId>
-						<nexusUrl>https://oss.sonatype.org</nexusUrl>
-						<autoReleaseAfterClose>true</autoReleaseAfterClose>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>${maven.source.version}</version>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<goals>
-								<goal>jar-no-fork</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${maven.javadoc.version}</version>
-					<configuration>
-						<release>${java.version}</release>
-					</configuration>
-					<executions>
-						<execution>
-							<id>attach-javadocs</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>${maven.gpg.version}</version>
-					<executions>
-						<execution>
-							<id>sign-artifacts</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>sign</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 </project>

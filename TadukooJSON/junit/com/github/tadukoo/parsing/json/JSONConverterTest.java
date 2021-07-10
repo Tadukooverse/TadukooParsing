@@ -4,10 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@SuppressWarnings("unchecked")
 public class JSONConverterTest{
 	private final JSONConverter converter = new JSONConverter();
 	private final String nullType = "null_type";
@@ -26,6 +29,54 @@ public class JSONConverterTest{
 				"\n}";
 		
 		JSONObject obj = converter.parseJSON(JSON);
+		if(obj instanceof JSONClass clazz){
+			// Verify keys
+			Set<String> keys = clazz.getKeys();
+			assertEquals(4, keys.size());
+			assertTrue(keys.contains(nullType));
+			assertTrue(keys.contains(boolTypeTrue));
+			assertTrue(keys.contains(boolTypeFalse));
+			assertTrue(keys.contains(stringType));
+			
+			// Verify items
+			Map<String, Object> items = clazz.getMap();
+			assertEquals(4, items.size());
+			assertNull(items.get(nullType));
+			assertEquals(true, items.get(boolTypeTrue));
+			assertEquals(false, items.get(boolTypeFalse));
+			assertEquals("test_string", items.get(stringType));
+		}else{
+			throw new IllegalStateException("Didn't get a JSONClass object");
+		}
+	}
+	
+	@Test
+	public void testSingleClassFromFilepath() throws IOException{
+		JSONObject obj = converter.parseJSONFromFile("junit-resource/SingleClassTest.json");
+		if(obj instanceof JSONClass clazz){
+			// Verify keys
+			Set<String> keys = clazz.getKeys();
+			assertEquals(4, keys.size());
+			assertTrue(keys.contains(nullType));
+			assertTrue(keys.contains(boolTypeTrue));
+			assertTrue(keys.contains(boolTypeFalse));
+			assertTrue(keys.contains(stringType));
+			
+			// Verify items
+			Map<String, Object> items = clazz.getMap();
+			assertEquals(4, items.size());
+			assertNull(items.get(nullType));
+			assertEquals(true, items.get(boolTypeTrue));
+			assertEquals(false, items.get(boolTypeFalse));
+			assertEquals("test_string", items.get(stringType));
+		}else{
+			throw new IllegalStateException("Didn't get a JSONClass object");
+		}
+	}
+	
+	@Test
+	public void testSingleClassFromFile() throws IOException{
+		JSONObject obj = converter.parseJSONFromFile(new File("junit-resource/SingleClassTest.json"));
 		if(obj instanceof JSONClass clazz){
 			// Verify keys
 			Set<String> keys = clazz.getKeys();
@@ -327,6 +378,41 @@ public class JSONConverterTest{
 			assertEquals("this won't match", converter.convertToJSON(new GarbageClass()));
 		}catch(IllegalArgumentException e){
 			// We should be reaching this properly. This is good
+		}
+	}
+	
+	@Test
+	public void testSaveJSONFile() throws IOException{
+		String JSON = "{ " +
+				"\n  \"" + nullType + "\": null," +
+				"\n  \"" + boolTypeTrue + "\": true," +
+				"\n  \"" + boolTypeFalse + "\": false," +
+				"\n  \"" + stringType + "\": \"test_string\"" +
+				"\n}";
+		
+		JSONClass clazzB4 = (JSONClass) converter.parseJSON(JSON);
+		String filepath = "target/testSaveJSONFile/SingleClassTestSave.json";
+		converter.saveJSONFile(filepath, clazzB4);
+		
+		JSONObject obj = converter.parseJSONFromFile(filepath);
+		if(obj instanceof JSONClass clazz){
+			// Verify keys
+			Set<String> keys = clazz.getKeys();
+			assertEquals(4, keys.size());
+			assertTrue(keys.contains(nullType));
+			assertTrue(keys.contains(boolTypeTrue));
+			assertTrue(keys.contains(boolTypeFalse));
+			assertTrue(keys.contains(stringType));
+			
+			// Verify items
+			Map<String, Object> items = clazz.getMap();
+			assertEquals(4, items.size());
+			assertNull(items.get(nullType));
+			assertEquals(true, items.get(boolTypeTrue));
+			assertEquals(false, items.get(boolTypeFalse));
+			assertEquals("test_string", items.get(stringType));
+		}else{
+			throw new IllegalStateException("Didn't get a JSONClass object");
 		}
 	}
 }

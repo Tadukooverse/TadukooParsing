@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>TadukooParsingParent</artifactId>
 		<groupId>com.github.tadukoo.parsing</groupId>
-		<version>0.3-Alpha</version>
+		<version>0.3.1-Alpha</version>
 	</parent>
 	<artifactId>TadukooJSON</artifactId>
 	<dependencies>
@@ -24,29 +24,19 @@
 			<groupId>${junit.platform.groupID}</groupId>
 			<artifactId>${junit.platform.artifactID}</artifactId>
 		</dependency>
+		<!-- Tadukoo JUnit -->
+		<dependency>
+			<groupId>${tadukoo.junit.groupID}</groupId>
+			<artifactId>${tadukoo.junit.junit.artifactID}</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>${directory.source}</sourceDirectory>
 		<testSourceDirectory>${directory.test}</testSourceDirectory>
-		<plugins>
-			<!-- Maven Required Stuff -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-			</plugin>
-			<!-- JaCoCo (for Testing Code Coverage) -->
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
+		<testResources>
+			<testResource>
+				<directory>${directory.test-resource}</directory>
+			</testResource>
+		</testResources>
 	</build>
 </project>

@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  */
 public class FormatNodeVerification{
 	
-	// Not allowed to instantiate Format Node Verification
+	/** Not allowed to instantiate Format Node Verification */
 	private FormatNodeVerification(){ }
 	
 	/**
