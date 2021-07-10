@@ -8,7 +8,6 @@ import com.github.tadukoo.util.tuple.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,6 +22,7 @@ public class JSONClassTest{
 		
 		public TestClass(){ }
 		
+		@SuppressWarnings("unused")
 		public TestClass(MappedPojo pojo){
 			super(pojo);
 		}
