@@ -6,11 +6,11 @@
 	<parent>
 		<groupId>com.github.tadukoo.maven</groupId>
 		<artifactId>TadukooMavenLibraryPOM</artifactId>
-		<version>0.3-Alpha</version>
+		<version>0.3.1-Alpha</version>
 	</parent>
 	<groupId>com.github.tadukoo.parsing</groupId>
 	<artifactId>TadukooParsingParent</artifactId>
-	<version>0.3.1-Alpha</version>
+	<version>0.3.2-Alpha-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<description>Various libraries for parsing different formats</description>
 	<modules>
@@ -21,7 +21,7 @@
 	<properties>
 		<!-- Info -->
 		<shortName>TadukooParsing</shortName>
-		<tadukoo.util.version>0.5-Beta</tadukoo.util.version>
+		<tadukoo.util.version>0.5.1-Beta</tadukoo.util.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
