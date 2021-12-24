@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.github.tadukoo.parsing</groupId>
 	<artifactId>TadukooParsingParent</artifactId>
-	<version>0.3.2-Alpha</version>
+	<version>0.3.3-Alpha-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<description>Various libraries for parsing different formats</description>
 	<modules>
@@ -21,7 +21,7 @@
 	<properties>
 		<!-- Info -->
 		<shortName>TadukooParsing</shortName>
-		<tadukoo.util.version>0.5.1-Beta</tadukoo.util.version>
+		<tadukoo.util.version>0.5.2-Beta-SNAPSHOT</tadukoo.util.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
