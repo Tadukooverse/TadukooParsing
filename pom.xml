@@ -21,7 +21,7 @@
 	<properties>
 		<!-- Info -->
 		<shortName>TadukooParsing</shortName>
-		<tadukoo.util.version>0.5.2-Beta-SNAPSHOT</tadukoo.util.version>
+		<tadukoo.util.version>0.6-Beta-SNAPSHOT</tadukoo.util.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
