@@ -1,6 +1,6 @@
 package com.github.tadukoo.parsing.json;
 
-import com.github.tadukoo.junit.logger.JUnitEasyLogger;
+import com.github.tadukoo.util.junit.logger.JUnitEasyLogger;
 import com.github.tadukoo.util.map.MapUtil;
 import com.github.tadukoo.util.pojo.AbstractMappedPojo;
 import com.github.tadukoo.util.pojo.MappedPojo;

@@ -26,8 +26,8 @@
 		</dependency>
 		<!-- Tadukoo JUnit -->
 		<dependency>
-			<groupId>${tadukoo.junit.groupID}</groupId>
-			<artifactId>${tadukoo.junit.junit.artifactID}</artifactId>
+			<groupId>${tadukoo.util.groupID}</groupId>
+			<artifactId>${tadukoo.util.junit.artifactID}</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
