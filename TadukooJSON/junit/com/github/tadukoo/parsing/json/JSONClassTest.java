@@ -1,6 +1,7 @@
 package com.github.tadukoo.parsing.json;
 
 import com.github.tadukoo.util.junit.logger.JUnitEasyLogger;
+import com.github.tadukoo.util.junit.logger.JUnitEasyLoggerEntry;
 import com.github.tadukoo.util.map.MapUtil;
 import com.github.tadukoo.util.pojo.AbstractMappedPojo;
 import com.github.tadukoo.util.pojo.MappedPojo;
@@ -219,9 +220,9 @@ public class JSONClassTest{
 		clazz.setItem("Test", 5);
 		JUnitEasyLogger logger = new JUnitEasyLogger();
 		assertNull(clazz.getJSONArrayItemNoThrow(logger, "Test", TestClass.class));
-		List<JUnitEasyLogger.JUnitEasyLoggerEntry> entries = logger.getEntries();
+		List<JUnitEasyLoggerEntry> entries = logger.getEntries();
 		assertEquals(1, entries.size());
-		JUnitEasyLogger.JUnitEasyLoggerEntry entry = entries.get(0);
+		JUnitEasyLoggerEntry entry = entries.get(0);
 		assertEquals(Level.SEVERE, entry.level());
 		assertEquals("Failed to get JSON Array item: Test", entry.message());
 		assertNotNull(entry.throwable());
